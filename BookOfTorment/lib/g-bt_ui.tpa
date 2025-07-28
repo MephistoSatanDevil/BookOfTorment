@@ -3712,3 +3712,4 @@ COPY_EXISTING ~L_en_US.lua~ ~override/L_pl_PL.lua~
 	GEMARIEL_WS_TOOLTIP = "Pazury Gemariela",
 	GEMARIEL_WS_ITEM_NAME = "Pazury Gemariela",
 	GEMARIEL_WS_ITEM_DESC = "PAZURY GEMARIELA \n(Standardowa broń) \nObrażenia: 1-8, kłute lub cięte \nUmagicznienie: +1 \nSzybkość: 1 \nWaga: 0 \nBiegłość: Sztylety \n\nPazury abiszaja, ostre jak brzytwa, szybkie i zabójcze, ale przede wszystkim skuteczne. To podstawowa broń Gemariela, zaprawiona nutką magii Seta. Czegóż abiszaj tego pokroju może chcieć więcej od życia?",~
+	
