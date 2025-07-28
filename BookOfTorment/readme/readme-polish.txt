@@ -29,9 +29,7 @@ Ustawienie skinów po instalacji: Przejdź do opcji grafiki w grze, i znajdź od
 
 ---------------------------------------------------------------------------------------------------------------------------------
 Uwagi: 
-"Book of Torment" powinien być kompatybilny z innymi modami. Dla moda UB, zaleca się taką kolejność:
-
-(1)book-of-torment + (2)unfinished-business + (3)journal-portrait-conversations( BEZ kopiowania UI.Menu ) ...
+"Book of Torment" powinien być kompatybilny z innymi modami.
 
 ---
 
