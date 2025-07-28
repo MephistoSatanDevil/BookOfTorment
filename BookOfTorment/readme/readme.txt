@@ -17,14 +17,13 @@ https://web.archive.org/web/20230707040057/https://forums.beamdog.com/uploads/ed
 
 WeiDU is also required (since v1.50):
 https://github.com/WeiDUorg/weidu/releases
-(After downloading, rename weidu.exe to Setup-BookOfTorment.exe and place it in the game dir)
 
 Installation (Windows&Wine):
     1. Unpack both mods and paste them into the game folder (where Torment.exe is situated);
     2. Run Setup-JournalPortraitConversations.exe (Select 'N' when asked about [Modify PSTEE UI.Menu]), next: install it 'I';
     3. Run Setup-BookOfTorment.exe, and install it.
 
-How to set skins after install: Go to the graphics options in the game, look for right button ;).
+How to set skins after install: Go to the graphics options in the game, look for BoT button ;).
 
 ---------------------------------------------------------------------------------------------------------------------------------
 Important information: 
