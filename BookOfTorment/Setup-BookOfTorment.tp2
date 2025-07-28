@@ -1,6 +1,6 @@
 BACKUP ~BookOfTorment/backup~
 SUPPORT ~FallDamage312 | szef. (https://www.nexusmods.com/planescapetormentenhancededition/mods/9 ; https://www.gibberlings3.net/forums/topic/36119-uimodplanescape-ee-book-of-torment-discover-the-dialogues-of-torment-in-a-new-edition/)~
-VERSION ~v1.50~
+VERSION ~v1.55~
 
 README ~BookOfTorment/readme/readme-%LANGUAGE%.txt~
        ~BookOfTorment/readme/readme.txt~
@@ -10,17 +10,17 @@ LANGUAGE ~English~
 	~BookOfTorment/lang/en_US/setup.tra~
 
 
-LANGUAGE ~Polish~
+LANGUAGE ~Polski (Polish)~
 	~polish~
 	~BookOfTorment/lang/pl_PL/setup.tra~
 
 BEGIN @1
 REQUIRE_PREDICATE (GAME_IS ~pstee~) @10
 
-INCLUDE ~%MOD_FOLDER%/lib/bot_ui.tph~
+INCLUDE ~%MOD_FOLDER%/lib/g-bt_ui.tpa~
+INCLUDE ~%MOD_FOLDER%/lib/g-bt_pvrz.tpa~
 	
 	COPY ~%MOD_FOLDER%/copy/main~ ~override~
-	COPY ~%MOD_FOLDER%/copy/mos+pvrz~ ~override~
 	COPY ~%MOD_FOLDER%/copy/bam~ ~override~
 	COPY ~%MOD_FOLDER%/copy/bestia2~ ~override~
 

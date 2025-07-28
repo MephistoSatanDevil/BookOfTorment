@@ -1,6 +1,6 @@
 ======================================
 PLANESCAPE: TORMENT - ENHANCED EDITION
-MOD UI: Book of Torment v1.50
+MOD UI: Book of Torment v1.55
 ======================================
 
 Note that the installation alters the UI.menu, BGEE.lua, and L_en_US.lua files.
@@ -87,6 +87,7 @@ If you want slim down conf file by yourself: open Baldur.Lua (in my documents), 
 Thanks @bbminner for tweaks!
 
 ---
+https://github.com/szef501/BookOfTorment/releases
 https://www.nexusmods.com/planescapetormentenhancededition/mods/9
 https://www.gibberlings3.net/forums/topic/36119-uimodplanescape-ee-book-of-torment-discover-the-dialogues-of-torment-in-a-new-edition/
 

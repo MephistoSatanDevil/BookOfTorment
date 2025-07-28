@@ -1,0 +1,568 @@
+
+// *** Code author: Argent77 ***
+
+
+ACTION_IF GAME_IS ~pstee~ BEGIN
+// Installing BAM resource
+COPY ~%MOD_FOLDER%/copy/bam/g-btsl1.bam~ ~override~
+  LPF UPDATE_PVRZ_INDICES
+    RET
+      original_base_index
+      new_base_index
+  END
+
+// It is strongly recommended to check the return values of "UPDATE_PVRZ_INDICES".
+ACTION_IF (new_base_index >= 0) BEGIN
+  // Installing associated PVRZ resources
+  ACTION_FOR_EACH file IN ~MOS99502.pvrz~ BEGIN
+    LAF INSTALL_PVRZ
+      INT_VAR
+        original_base_index
+        new_base_index
+      STR_VAR
+        source_file = EVAL ~%MOD_FOLDER%/copy/mos+pvrz/%file%~
+      RET
+        success
+        DEST_FILE
+    END
+    ACTION_IF (success) BEGIN
+      PRINT ~Successfully installed file %file% as %DEST_FILE%.~
+    END ELSE BEGIN
+      WARN ~Could not install file %file%!~
+    END
+  END
+END
+END
+
+// bs2
+
+// Installing MOS
+ACTION_IF GAME_IS ~pstee~ BEGIN
+COPY ~%MOD_FOLDER%/copy/mos+pvrz/g-btbs2.mos~ ~override~
+  LPF UPDATE_PVRZ_INDICES
+    RET
+      original_base_index
+      new_base_index
+  END
+
+ACTION_IF (new_base_index >= 0) BEGIN
+  // Installing PVRZ resources
+  ACTION_FOR_EACH file IN ~MOS99642.pvrz~ ~MOS99643.pvrz~ ~MOS99644.pvrz~ ~MOS99645.pvrz~ BEGIN
+    LAF INSTALL_PVRZ
+      INT_VAR
+        original_base_index
+        new_base_index
+      STR_VAR
+        source_file = EVAL ~%MOD_FOLDER%/copy/mos+pvrz/%file%~
+      RET
+        success
+		DEST_FILE
+    END
+    ACTION_IF (success) BEGIN //ACTION_IF (NOT success) BEGIN
+	 PRINT ~Successfully installed file %file% as %DEST_FILE%.~
+	 END ELSE BEGIN // else begin
+      WARN ~Could not install file %file%!~
+    END
+  END
+END
+END
+
+// cla
+
+// Installing MOS
+ACTION_IF GAME_IS ~pstee~ BEGIN
+COPY ~%MOD_FOLDER%/copy/mos+pvrz/g-btcla.mos~ ~override~
+  LPF UPDATE_PVRZ_INDICES
+    RET
+      original_base_index
+      new_base_index
+  END
+
+ACTION_IF (new_base_index >= 0) BEGIN
+  // Installing PVRZ resources
+  ACTION_FOR_EACH file IN ~MOS99654.pvrz~ ~MOS99655.pvrz~ ~MOS99656.pvrz~ BEGIN
+    LAF INSTALL_PVRZ
+      INT_VAR
+        original_base_index
+        new_base_index
+      STR_VAR
+        source_file = EVAL ~%MOD_FOLDER%/copy/mos+pvrz/%file%~
+      RET
+        success
+		DEST_FILE
+    END
+    ACTION_IF (success) BEGIN //ACTION_IF (NOT success) BEGIN
+	 PRINT ~Successfully installed file %file% as %DEST_FILE%.~
+	 END ELSE BEGIN // else begin
+      WARN ~Could not install file %file%!~
+    END
+  END
+END
+END
+
+// def
+
+// Installing MOS
+ACTION_IF GAME_IS ~pstee~ BEGIN
+COPY ~%MOD_FOLDER%/copy/mos+pvrz/g-btdef.mos~ ~override~
+  LPF UPDATE_PVRZ_INDICES
+    RET
+      original_base_index
+      new_base_index
+  END
+
+ACTION_IF (new_base_index >= 0) BEGIN
+  // Installing PVRZ resources
+  ACTION_FOR_EACH file IN ~MOS99657.pvrz~ ~MOS99658.pvrz~ ~MOS99659.pvrz~ BEGIN
+    LAF INSTALL_PVRZ
+      INT_VAR
+        original_base_index
+        new_base_index
+      STR_VAR
+        source_file = EVAL ~%MOD_FOLDER%/copy/mos+pvrz/%file%~
+      RET
+        success
+		DEST_FILE
+    END
+    ACTION_IF (success) BEGIN //ACTION_IF (NOT success) BEGIN
+	 PRINT ~Successfully installed file %file% as %DEST_FILE%.~
+	 END ELSE BEGIN // else begin
+      WARN ~Could not install file %file%!~
+    END
+  END
+END
+END
+
+// med
+
+// Installing MOS
+ACTION_IF GAME_IS ~pstee~ BEGIN
+COPY ~%MOD_FOLDER%/copy/mos+pvrz/g-btmed.mos~ ~override~
+  LPF UPDATE_PVRZ_INDICES
+    RET
+      original_base_index
+      new_base_index
+  END
+
+ACTION_IF (new_base_index >= 0) BEGIN
+  // Installing PVRZ resources
+  ACTION_FOR_EACH file IN ~MOS99600.pvrz~  BEGIN
+    LAF INSTALL_PVRZ
+      INT_VAR
+        original_base_index
+        new_base_index
+      STR_VAR
+        source_file = EVAL ~%MOD_FOLDER%/copy/mos+pvrz/%file%~
+      RET
+        success
+		DEST_FILE
+    END
+    ACTION_IF (success) BEGIN //ACTION_IF (NOT success) BEGIN
+	 PRINT ~Successfully installed file %file% as %DEST_FILE%.~
+	 END ELSE BEGIN // else begin
+      WARN ~Could not install file %file%!~
+    END
+  END
+END
+END
+
+// lin
+
+// Installing MOS
+ACTION_IF GAME_IS ~pstee~ BEGIN
+COPY ~%MOD_FOLDER%/copy/mos+pvrz/g-btlin.mos~ ~override~
+  LPF UPDATE_PVRZ_INDICES
+    RET
+      original_base_index
+      new_base_index
+  END
+
+ACTION_IF (new_base_index >= 0) BEGIN
+  // Installing PVRZ resources
+  ACTION_FOR_EACH file IN ~MOS99601.pvrz~ ~MOS99602.pvrz~ ~MOS99603.pvrz~ ~MOS99604.pvrz~ ~MOS99605.pvrz~ ~MOS99606.pvrz~ ~MOS99607.pvrz~ ~MOS99608.pvrz~ ~MOS99609.pvrz~  BEGIN
+    LAF INSTALL_PVRZ
+      INT_VAR
+        original_base_index
+        new_base_index
+      STR_VAR
+        source_file = EVAL ~%MOD_FOLDER%/copy/mos+pvrz/%file%~
+      RET
+        success
+		DEST_FILE
+    END
+    ACTION_IF (success) BEGIN //ACTION_IF (NOT success) BEGIN
+	 PRINT ~Successfully installed file %file% as %DEST_FILE%.~
+	 END ELSE BEGIN // else begin
+      WARN ~Could not install file %file%!~
+    END
+  END
+END
+END
+
+// law
+
+// Installing MOS
+ACTION_IF GAME_IS ~pstee~ BEGIN
+COPY ~%MOD_FOLDER%/copy/mos+pvrz/g-btlaw.mos~ ~override~
+  LPF UPDATE_PVRZ_INDICES
+    RET
+      original_base_index
+      new_base_index
+  END
+
+ACTION_IF (new_base_index >= 0) BEGIN
+  // Installing PVRZ resources
+  ACTION_FOR_EACH file IN ~MOS99610.pvrz~ ~MOS99611.pvrz~ ~MOS99612.pvrz~ ~MOS99613.pvrz~ ~MOS99614.pvrz~ ~MOS99615.pvrz~ ~MOS99616.pvrz~ ~MOS99617.pvrz~ ~MOS99618.pvrz~   BEGIN
+    LAF INSTALL_PVRZ
+      INT_VAR
+        original_base_index
+        new_base_index
+      STR_VAR
+        source_file = EVAL ~%MOD_FOLDER%/copy/mos+pvrz/%file%~
+      RET
+        success
+		DEST_FILE
+    END
+    ACTION_IF (success) BEGIN //ACTION_IF (NOT success) BEGIN
+	 PRINT ~Successfully installed file %file% as %DEST_FILE%.~
+	 END ELSE BEGIN // else begin
+      WARN ~Could not install file %file%!~
+    END
+  END
+END
+END
+
+
+// sdb
+
+// Installing MOS
+ACTION_IF GAME_IS ~pstee~ BEGIN
+COPY ~%MOD_FOLDER%/copy/mos+pvrz/g-btsdb.mos~ ~override~
+  LPF UPDATE_PVRZ_INDICES
+    RET
+      original_base_index
+      new_base_index
+  END
+
+ACTION_IF (new_base_index >= 0) BEGIN
+  // Installing PVRZ resources
+  ACTION_FOR_EACH file IN ~MOS99619.pvrz~ ~MOS99620.pvrz~ ~MOS99621.pvrz~ ~MOS99622.pvrz~ ~MOS99623.pvrz~ BEGIN
+    LAF INSTALL_PVRZ
+      INT_VAR
+        original_base_index
+        new_base_index
+      STR_VAR
+        source_file = EVAL ~%MOD_FOLDER%/copy/mos+pvrz/%file%~
+      RET
+        success
+		DEST_FILE
+    END
+    ACTION_IF (success) BEGIN //ACTION_IF (NOT success) BEGIN
+	 PRINT ~Successfully installed file %file% as %DEST_FILE%.~
+	 END ELSE BEGIN // else begin
+      WARN ~Could not install file %file%!~
+    END
+  END
+END
+END
+
+
+// shd
+
+// Installing MOS
+ACTION_IF GAME_IS ~pstee~ BEGIN
+COPY ~%MOD_FOLDER%/copy/mos+pvrz/g-btshd.mos~ ~override~
+  LPF UPDATE_PVRZ_INDICES
+    RET
+      original_base_index
+      new_base_index
+  END
+
+ACTION_IF (new_base_index >= 0) BEGIN
+  // Installing PVRZ resources
+  ACTION_FOR_EACH file IN ~MOS99624.pvrz~ ~MOS99625.pvrz~ ~MOS99626.pvrz~ ~MOS99627.pvrz~ ~MOS99628.pvrz~ ~MOS99629.pvrz~ ~MOS99630.pvrz~ ~MOS99631.pvrz~ ~MOS99632.pvrz~ ~MOS99633.pvrz~  ~MOS99634.pvrz~ ~MOS99635.pvrz~ ~MOS99636.pvrz~ ~MOS99637.pvrz~ ~MOS99638.pvrz~ BEGIN
+    LAF INSTALL_PVRZ
+      INT_VAR
+        original_base_index
+        new_base_index
+      STR_VAR
+        source_file = EVAL ~%MOD_FOLDER%/copy/mos+pvrz/%file%~
+      RET
+        success
+		DEST_FILE
+    END
+    ACTION_IF (success) BEGIN //ACTION_IF (NOT success) BEGIN
+	 PRINT ~Successfully installed file %file% as %DEST_FILE%.~
+	 END ELSE BEGIN // else begin
+      WARN ~Could not install file %file%!~
+    END
+  END
+END
+END
+
+
+// pos
+
+// Installing MOS
+ACTION_IF GAME_IS ~pstee~ BEGIN
+COPY ~%MOD_FOLDER%/copy/mos+pvrz/g-btpos.mos~ ~override~
+  LPF UPDATE_PVRZ_INDICES
+    RET
+      original_base_index
+      new_base_index
+  END
+
+ACTION_IF (new_base_index >= 0) BEGIN
+  // Installing PVRZ resources
+  ACTION_FOR_EACH file IN ~MOS99646.pvrz~ ~MOS99647.pvrz~ ~MOS99648.pvrz~ BEGIN
+    LAF INSTALL_PVRZ
+      INT_VAR
+        original_base_index
+        new_base_index
+      STR_VAR
+        source_file = EVAL ~%MOD_FOLDER%/copy/mos+pvrz/%file%~
+      RET
+        success
+		DEST_FILE
+    END
+    ACTION_IF (success) BEGIN //ACTION_IF (NOT success) BEGIN
+	 PRINT ~Successfully installed file %file% as %DEST_FILE%.~
+	 END ELSE BEGIN // else begin
+      WARN ~Could not install file %file%!~
+    END
+  END
+END
+END
+
+// ton
+
+// Installing MOS
+ACTION_IF GAME_IS ~pstee~ BEGIN
+COPY ~%MOD_FOLDER%/copy/mos+pvrz/g-btton.mos~ ~override~
+  LPF UPDATE_PVRZ_INDICES
+    RET
+      original_base_index
+      new_base_index
+  END
+
+ACTION_IF (new_base_index >= 0) BEGIN
+  // Installing PVRZ resources
+  ACTION_FOR_EACH file IN ~MOS99649.pvrz~ ~MOS99650.pvrz~ ~MOS99651.pvrz~ ~MOS99652.pvrz~ ~MOS99653.pvrz~ BEGIN
+    LAF INSTALL_PVRZ
+      INT_VAR
+        original_base_index
+        new_base_index
+      STR_VAR
+        source_file = EVAL ~%MOD_FOLDER%/copy/mos+pvrz/%file%~
+      RET
+        success
+		DEST_FILE
+    END
+    ACTION_IF (success) BEGIN //ACTION_IF (NOT success) BEGIN
+	 PRINT ~Successfully installed file %file% as %DEST_FILE%.~
+	 END ELSE BEGIN // else begin
+      WARN ~Could not install file %file%!~
+    END
+  END
+END
+END
+
+// jnw
+
+// Installing MOS
+ACTION_IF GAME_IS ~pstee~ BEGIN
+COPY ~%MOD_FOLDER%/copy/mos+pvrz/g-btjnw.mos~ ~override~
+  LPF UPDATE_PVRZ_INDICES
+    RET
+      original_base_index
+      new_base_index
+  END
+
+ACTION_IF (new_base_index >= 0) BEGIN
+  // Installing PVRZ resources
+  ACTION_FOR_EACH file IN ~MOS99660.pvrz~ ~MOS99661.pvrz~ ~MOS99662.pvrz~ BEGIN
+    LAF INSTALL_PVRZ
+      INT_VAR
+        original_base_index
+        new_base_index
+      STR_VAR
+        source_file = EVAL ~%MOD_FOLDER%/copy/mos+pvrz/%file%~
+      RET
+        success
+		DEST_FILE
+    END
+    ACTION_IF (success) BEGIN //ACTION_IF (NOT success) BEGIN
+	 PRINT ~Successfully installed file %file% as %DEST_FILE%.~
+	 END ELSE BEGIN // else begin
+      WARN ~Could not install file %file%!~
+    END
+  END
+END
+END
+
+
+// jol
+
+// Installing MOS
+ACTION_IF GAME_IS ~pstee~ BEGIN
+COPY ~%MOD_FOLDER%/copy/mos+pvrz/g-btjol.mos~ ~override~
+  LPF UPDATE_PVRZ_INDICES
+    RET
+      original_base_index
+      new_base_index
+  END
+
+ACTION_IF (new_base_index >= 0) BEGIN
+  // Installing PVRZ resources
+  ACTION_FOR_EACH file IN ~MOS99663.pvrz~ ~MOS99664.pvrz~ ~MOS99665.pvrz~ BEGIN
+    LAF INSTALL_PVRZ
+      INT_VAR
+        original_base_index
+        new_base_index
+      STR_VAR
+        source_file = EVAL ~%MOD_FOLDER%/copy/mos+pvrz/%file%~
+      RET
+        success
+		DEST_FILE
+    END
+    ACTION_IF (success) BEGIN //ACTION_IF (NOT success) BEGIN
+	 PRINT ~Successfully installed file %file% as %DEST_FILE%.~
+	 END ELSE BEGIN // else begin
+      WARN ~Could not install file %file%!~
+    END
+  END
+END
+END
+
+
+// por
+
+// Installing MOS
+ACTION_IF GAME_IS ~pstee~ BEGIN
+COPY ~%MOD_FOLDER%/copy/mos+pvrz/g-btpor.mos~ ~override~
+  LPF UPDATE_PVRZ_INDICES
+    RET
+      original_base_index
+      new_base_index
+  END
+
+ACTION_IF (new_base_index >= 0) BEGIN
+  // Installing PVRZ resources
+  ACTION_FOR_EACH file IN ~MOS99666.pvrz~ ~MOS99667.pvrz~ ~MOS99668.pvrz~ BEGIN
+    LAF INSTALL_PVRZ
+      INT_VAR
+        original_base_index
+        new_base_index
+      STR_VAR
+        source_file = EVAL ~%MOD_FOLDER%/copy/mos+pvrz/%file%~
+      RET
+        success
+		DEST_FILE
+    END
+    ACTION_IF (success) BEGIN //ACTION_IF (NOT success) BEGIN
+	 PRINT ~Successfully installed file %file% as %DEST_FILE%.~
+	 END ELSE BEGIN // else begin
+      WARN ~Could not install file %file%!~
+    END
+  END
+END
+END
+
+// sd1
+
+// Installing MOS
+ACTION_IF GAME_IS ~pstee~ BEGIN
+COPY ~%MOD_FOLDER%/copy/mos+pvrz/g-btsd1.mos~ ~override~
+  LPF UPDATE_PVRZ_INDICES
+    RET
+      original_base_index
+      new_base_index
+  END
+
+ACTION_IF (new_base_index >= 0) BEGIN
+  // Installing PVRZ resources
+  ACTION_FOR_EACH file IN ~MOS99669.pvrz~ ~MOS99670.pvrz~ ~MOS99671.pvrz~ BEGIN
+    LAF INSTALL_PVRZ
+      INT_VAR
+        original_base_index
+        new_base_index
+      STR_VAR
+        source_file = EVAL ~%MOD_FOLDER%/copy/mos+pvrz/%file%~
+      RET
+        success
+		DEST_FILE
+    END
+    ACTION_IF (success) BEGIN //ACTION_IF (NOT success) BEGIN
+	 PRINT ~Successfully installed file %file% as %DEST_FILE%.~
+	 END ELSE BEGIN // else begin
+      WARN ~Could not install file %file%!~
+    END
+  END
+END
+END
+
+// sh1
+
+// Installing MOS
+ACTION_IF GAME_IS ~pstee~ BEGIN
+COPY ~%MOD_FOLDER%/copy/mos+pvrz/g-btsh1.mos~ ~override~
+  LPF UPDATE_PVRZ_INDICES
+    RET
+      original_base_index
+      new_base_index
+  END
+
+ACTION_IF (new_base_index >= 0) BEGIN
+  // Installing PVRZ resources
+  ACTION_FOR_EACH file IN ~MOS99672.pvrz~ ~MOS99673.pvrz~ ~MOS99674.pvrz~ BEGIN
+    LAF INSTALL_PVRZ
+      INT_VAR
+        original_base_index
+        new_base_index
+      STR_VAR
+        source_file = EVAL ~%MOD_FOLDER%/copy/mos+pvrz/%file%~
+      RET
+        success
+		DEST_FILE
+    END
+    ACTION_IF (success) BEGIN //ACTION_IF (NOT success) BEGIN
+	 PRINT ~Successfully installed file %file% as %DEST_FILE%.~
+	 END ELSE BEGIN // else begin
+      WARN ~Could not install file %file%!~
+    END
+  END
+END
+END
+
+// ttn
+
+// Installing MOS
+ACTION_IF GAME_IS ~pstee~ BEGIN
+COPY ~%MOD_FOLDER%/copy/mos+pvrz/g-btttn.mos~ ~override~
+  LPF UPDATE_PVRZ_INDICES
+    RET
+      original_base_index
+      new_base_index
+  END
+
+ACTION_IF (new_base_index >= 0) BEGIN
+  // Installing PVRZ resources
+  ACTION_FOR_EACH file IN ~MOS99675.pvrz~ ~MOS99676.pvrz~ ~MOS99677.pvrz~  BEGIN
+    LAF INSTALL_PVRZ
+      INT_VAR
+        original_base_index
+        new_base_index
+      STR_VAR
+        source_file = EVAL ~%MOD_FOLDER%/copy/mos+pvrz/%file%~
+      RET
+        success
+		DEST_FILE
+    END
+    ACTION_IF (success) BEGIN //ACTION_IF (NOT success) BEGIN
+	 PRINT ~Successfully installed file %file% as %DEST_FILE%.~
+	 END ELSE BEGIN // else begin
+      WARN ~Could not install file %file%!~
+    END
+  END
+END
+END

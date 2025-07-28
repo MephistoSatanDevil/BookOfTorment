@@ -1,0 +1,3708 @@
+
+// 01. Graphics menu & skins menu
+// 02. Inventory menu
+// 03. Start menu
+// 04. World dialog menu
+// 05. Inventroy menus/background & journal modes
+// 06. Journal & backgrounds
+// 07. Dialogs backgrounds
+// 08. Quest colors
+// 09. Bestiary2 func
+// 10. Sliders strings
+// 11. Dialogentrytext 2 & 3
+// 12. Load/Save panels n/a
+// 13. BGEE.lua
+// 14. Languages
+
+//================================\\
+// 01. Graphics menu & skins menu \\
+//================================\\
+
+COPY_EXISTING ~UI.menu~ ~override~
+
+	REPLACE_TEXTUALLY ~button[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+area		698 566 138 56+[%TAB%%LNL%%MNL%%WNL%]+bam			NORMBUTT+[%TAB%%LNL%%MNL%%WNL%]+sequence	2+[%TAB%%LNL%%MNL%%WNL%]+text 		"DONE_BUTTON" --Done+[%TAB%%LNL%%MNL%%WNL%]+text style	"button"+[%TAB%%LNL%%MNL%%WNL%]+action+[%TAB%%LNL%%MNL%%WNL%]+"+[%TAB%%LNL%%MNL%%WNL%]+panelID = 6+[%TAB%%LNL%%MNL%%WNL%]+Infinity_ChangeOption( 22, fontSizeSLDR, panelID)+[%TAB%%LNL%%MNL%%WNL%]+for index, var in pairs(graphicsToggles) do+[%TAB%%LNL%%MNL%%WNL%]+if ( var\[6\] == 1 ) then+[%TAB%%LNL%%MNL%%WNL%]+Infinity_ChangeOption( var\[3\], var\[5\], panelID)+[%TAB%%LNL%%MNL%%WNL%]+end+[%TAB%%LNL%%MNL%%WNL%]+end+[%TAB%%LNL%%MNL%%WNL%]+selectedSL = 0+[%TAB%%LNL%%MNL%%WNL%]+Infinity_PopMenu()+[%TAB%%LNL%%MNL%%WNL%]+"+[%TAB%%LNL%%MNL%%WNL%]+}+[%TAB%%LNL%%MNL%%WNL%]+}~
+	
+	~--szef_1 (Graphics menu & skins)
+	button 
+	{
+		area		698 566 138 56
+		bam			NORMBUTT
+		sequence	2
+		text 		"DONE_BUTTON" --Done
+		text style	"button"
+		action
+		"
+			panelID = 6
+			Infinity_ChangeOption( 22, fontSizeSLDR, panelID)
+
+			for index, var in pairs(graphicsToggles) do
+				
+				if ( var[6] == 1 ) then
+					Infinity_ChangeOption( var[3], var[5], panelID)
+				end				
+			end
+
+			selectedSL = 0
+			Infinity_PopMenu()
+		"
+	}
+	button
+	{
+		area		92 572 178 36
+		bam			NORMBUTT
+		sequence	2
+		text 		"Book of Torment"
+		text style	"button"
+		action
+		"
+		Infinity_PushMenu('SKINS')
+		"
+	}
+}
+menu 
+{
+	name 'SKINS'
+	modal
+	align center center
+	popupSound 1
+	onOpen
+	"
+		currentGraphicsIdx = 0
+		currentGraphicsSL = 0
+		
+		for index, var in pairs(graphicsToggles) do
+			var[5] = Infinity_GetOption(var[3], panelID)
+			var[6] = 0
+			if var[5] == 0 then
+				var[4] = 0
+			else
+				var[4] = 2
+			
+			end
+		end
+		
+		for index, var in ipairs(SkinsOptionsSliders) do
+			var[6] = SkinsGetSliderOption(index)
+			var[1] = 0
+			if var[3] == 0 then
+				var[5] = 0
+			else
+				var[5] = 2
+ 			end
+		end
+		
+		
+	"
+	label
+	{
+		area 0 0 1366 768
+		mosaic	'g-btlin'
+	}
+	label
+	{
+		area 1108 38 214 229
+		bam "POPUPIMG"
+		sequence 0
+	}
+	label
+	{
+		area		72 176 324 64
+		text		"Book of Torment"
+		text style	title
+		text font "exocet"
+		text shadow 1
+	}
+
+	
+	text
+	{
+		area		464 148 410 126
+		text		lua "getStringFromAmbiguousSource(helpString)"
+		text style	normal
+		text align center center
+		scrollbar	'CGSCRL1'
+	}
+	text
+	{
+		area		64 350 346 195
+		mosaic		lua "GetDboxImgString()"
+	}
+	text
+	{
+		area		64 350 346 195
+		mosaic		lua "GetDboxImgString()"
+		action
+		"
+		Infinity_PushMenu('DBOX_IMG_FULL')
+		"
+		actionExit
+		"
+		Infinity_PopMenu('DBOX_IMG_FULL')
+		"
+	}
+	text
+	{
+		area		488 350 346 195
+		mosaic		lua "GetInvImgString()"
+	}
+	text
+	{
+		area		488 350 346 195
+		mosaic		lua "GetInvImgString()"
+		action
+		"
+		Infinity_PushMenu('INV_IMG_FULL')
+		"
+		actionExit
+		"
+		Infinity_PopMenu('INV_IMG_FULL')
+		"
+	}
+	text
+	{
+		area		916 350 346 195
+		mosaic		lua "GetJournalImgString()"
+	}
+	text
+	{
+		area		916 350 346 195
+		mosaic		lua "GetJournalImgString()"
+		action
+		"
+		Infinity_PushMenu('JOURNAL_IMG_FULL')
+		"
+		actionExit
+		"
+		Infinity_PopMenu('JOURNAL_IMG_FULL')
+		"
+	}
+	
+	text
+	{
+		area		42 596 178 36
+		text "DIALOGUE_BOX"
+		text style	"button"
+		text align left center
+		text useFontZoom 0
+		focus color 255 255 255 255
+		text color lua "getLabelColor(4)"
+		action 
+		"
+			helpString = GetdboxDescString() 
+			selectedGraphicOpt = 0
+			selectedSL = 4
+		" 
+	}
+	slider
+	{
+		area 300 596 110 36
+		position "SkinsOptionsSliders[1][6]"
+		bam	 'SLDRSTAR'
+		mosaic sliderbg
+		settings	lua "SkinsOptionsSliders[1][3]"
+		--pad 8 0 10 0
+		action 
+		"
+			currentGraphicsSL = 1
+			helpString = GetdboxString()
+			--ImgString = GetImgString(1)
+			currentGraphicsIdx = 0
+			selectedGraphicOpt = 0
+			selectedSL = 4
+		" 
+	}
+	text
+	{
+		area		198 596 88 36
+		text lua "GetdboxSliderString()"
+		text style	"button"
+		text align left center
+		text useFontZoom 0
+		focus color 255 255 255 255
+	}
+	
+	text
+	{
+		area		470 596 178 36
+		text "INVENTORY"
+		text style	"button"
+		text align left center
+		text useFontZoom 0
+		focus color 255 255 255 255
+		text color lua "getLabelColor(5)"
+		action 
+		" 	
+			helpString = GetInvDescString()				
+			selectedGraphicOpt = 0
+			selectedSL = 5	
+		"
+	}
+	slider
+	{
+		area 724 596 110 36
+		position "SkinsOptionsSliders[2][6]"
+		bam	 'SLDRSTAR'
+		mosaic sliderbg
+		settings	lua "SkinsOptionsSliders[2][3]"
+		--pad 8 0 10 0
+		action 
+		"
+			currentGraphicsSL = 1
+			helpString = GetInvString()
+			--ImgString = GetImgString(2)			
+			currentGraphicsIdx = 0
+			selectedGraphicOpt = 0
+			selectedSL = 5
+		" 
+	}
+	text
+	{
+		area		634 596 68 36
+		text lua "GetInvSliderString()"
+		text style	"button"
+		text align left center
+		text useFontZoom 0
+		focus color 255 255 255 255
+	}
+	
+	text
+	{
+		area		894 596 178 36
+		text "JOURNAL"
+		text style	"button"
+		text align left center
+		text useFontZoom 0
+		focus color 255 255 255 255
+		text color lua "getLabelColor(6)"
+		action 
+		" 	
+			helpString = GetJournalDescString()
+			
+			selectedGraphicOpt = 0
+			selectedSL = 6	
+		"
+	}
+	slider
+	{
+		area 1146 596 110 36
+		position "SkinsOptionsSliders[3][6]"
+		bam	 'SLDRSTAR'
+		mosaic sliderbg
+		settings	lua "SkinsOptionsSliders[3][3]"
+		--pad 8 0 10 0
+		action 
+		"
+			currentGraphicsSL = 1
+			helpString = GetJournalString()
+			--ImgString = GetImgString(3)
+			currentGraphicsIdx = 0
+			selectedGraphicOpt = 0
+			selectedSL = 6
+		" 
+	}
+	text
+	{
+		area		1052 596 68 36
+		text lua "GetJournalSliderString()"
+		text style	"button"
+		text align left center
+		text useFontZoom 0
+		focus color 255 255 255 255
+	}
+
+	
+	button
+	{
+		area		500 674 138 56
+		bam			NORMBUTT
+		text 		"CANCEL_BUTTON"
+		text style	"button"
+		action
+		" 
+			panelID = 6
+			Infinity_ChangeOption( 22, fontSizeCancel, panelID)
+			Infinity_ChangeOption( 71, gammaCancel, panelID)
+			Infinity_ChangeOption( 72, brightnessCancel, panelID)
+			
+			selectedSL = 0
+			Infinity_PopMenu()
+		"
+	}
+	
+	button
+	{
+		area		680 674 138 56
+		bam			NORMBUTT
+		sequence	2
+		text 		"DONE_BUTTON" --Done
+		text style	"button"
+		action
+		"
+			panelID = 6
+			Infinity_ChangeOption( 22, fontSizeSLDR, panelID)
+
+			for index, var in pairs(graphicsToggles) do
+				
+				if ( var[6] == 1 ) then
+					Infinity_ChangeOption( var[3], var[5], panelID)
+				end				
+			end
+			
+			for index, var in ipairs(SkinsOptionsSliders) do
+				SkinsSaveSliderOption(index)
+			end
+			
+			Infinity_SetINIValue('Graphics','Dialogue Box Skin',SkinsOptionsSliders[1][6])
+			Infinity_SetINIValue('Graphics','Inventory Skin',SkinsOptionsSliders[2][6])
+			Infinity_SetINIValue('Graphics','Journal Screen',SkinsOptionsSliders[3][6])
+
+			
+			selectedSL = 0
+			Infinity_PopMenu()
+		"
+	}
+	}
+	menu
+	{
+	name 'DBOX_IMG_FULL'
+	align center center
+	onOpen
+	"
+	if SkinsOptionsSliders[1][6] == 0 then
+    Infinity_PushMenu('DBOX_IMG1') 
+    elseif SkinsOptionsSliders[1][6] == 1 then
+    Infinity_PushMenu('DBOX_IMG2') 
+    elseif SkinsOptionsSliders[1][6] == 2 then
+    Infinity_PushMenu('DBOX_IMG3') 
+	else
+	Infinity_PushMenu('DBOX_IMG4')
+    end
+	"
+	button
+	{
+		area		0 0 0 0
+	}
+	}
+	menu
+	{
+	name 'DBOX_IMG1'
+	label
+	{
+		area 0 0 1366 768
+		mosaic	"g-btcla"
+	}
+	button
+	{
+		area		1288 36 50 50
+		bam			"XBUTT"
+		action
+		"
+			Infinity_PopMenu()
+		"
+	}
+	}
+	menu
+	{
+	name 'DBOX_IMG2'
+	label
+	{
+		area 0 0 1366 768
+		mosaic	"g-btpor"
+	}
+	button
+	{
+		area		1288 36 50 50
+		bam			"XBUTT"
+		action
+		"
+			Infinity_PopMenu()
+		"
+	}
+	}
+	menu
+	{
+	name 'DBOX_IMG3'
+	label
+	{
+		area 0 0 1366 768
+		mosaic	"g-btsd1"
+	}
+	button
+	{
+		area		1288 36 50 50
+		bam			"XBUTT"
+		action
+		"
+			Infinity_PopMenu()
+		"
+	}
+	}
+	menu
+	{
+	name 'DBOX_IMG4'
+	label
+	{
+		area 0 0 1366 768
+		mosaic	"g-btttn"
+	}
+	button
+	{
+		area		1288 36 50 50
+		bam			"XBUTT"
+		action
+		"
+			Infinity_PopMenu()
+		"
+	}
+	}
+	menu
+	{
+	name 'INV_IMG_FULL'
+	align center center
+	onOpen
+	"
+	if SkinsOptionsSliders[2][6] == 0 then
+    Infinity_PushMenu('INV_IMG1') 
+    elseif SkinsOptionsSliders[2][6] == 1 then
+    Infinity_PushMenu('INV_IMG2') 
+    else
+    Infinity_PushMenu('INV_IMG3')
+    end
+	"
+	button
+	{
+		area		0 0 0 0
+	}
+	}
+	menu
+	{
+	name 'INV_IMG1'
+	label
+	{
+		area 0 0 1366 768
+		mosaic	"g-btdef"
+	}
+	button
+	{
+		area		1288 36 50 50
+		bam			"XBUTT"
+		action
+		"
+			Infinity_PopMenu()
+		"
+	}
+	}
+	menu
+	{
+	name 'INV_IMG2'
+	label
+	{
+		area 0 0 1366 768
+		mosaic	"g-btsh1"
+	}
+	button
+	{
+		area		1288 36 50 50
+		bam			"XBUTT"
+		action
+		"
+			Infinity_PopMenu()
+		"
+	}
+	}
+		menu
+	{
+	name 'INV_IMG3'
+	label
+	{
+		area 0 0 1366 768
+		mosaic	"inv-iw"
+	}
+	button
+	{
+		area		1288 36 50 50
+		bam			"XBUTT"
+		action
+		"
+			Infinity_PopMenu()
+		"
+	}
+	}
+	menu
+	{
+	name 'JOURNAL_IMG_FULL'
+	align center center
+	onOpen
+	"
+	if SkinsOptionsSliders[3][6] == 0 then
+    Infinity_PushMenu('JOURNAL_IMG1') 
+    else
+    Infinity_PushMenu('JOURNAL_IMG2') 
+    end
+	"
+	button
+	{
+		area		0 0 0 0
+	}
+	}
+	menu
+	{
+	name 'JOURNAL_IMG1'
+	label
+	{
+		area 0 0 1366 768
+		mosaic	"g-btjol"
+	}
+	button
+	{
+		area		1288 36 50 50
+		bam			"XBUTT"
+		action
+		"
+			Infinity_PopMenu()
+		"
+	}
+	}
+	menu
+	{
+	name 'JOURNAL_IMG2'
+	label
+	{
+		area 0 0 1366 768
+		mosaic	"g-btjnw"
+	}
+	button
+	{
+		area		1288 36 50 50
+		bam			"XBUTT"
+		action
+		"
+			Infinity_PopMenu()
+		"
+	}
+	}~
+	
+//====================\\
+// 02. Inventory menu \\
+//====================\\
+
+	REPLACE_TEXTUALLY ~`[%TAB%%LNL%%MNL%%WNL%]+menu[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+name 'INVENTORY'~
+	
+	~--szef_02 (Inventory menu)
+	
+	function updateSlots()
+	charTable = {}
+	local curCharId = id
+
+	Infinity_OnPortraitLClick(0)
+	local CharId1 = id
+	Infinity_UpdateLuaStats()
+	table.insert(charTable, CharId1)
+	Infinity_OnPortraitLClick(1)
+	local CharId2 = id
+	Infinity_UpdateLuaStats()
+	if Infinity_GetNumCharacters() > 1 then
+	table.insert(charTable, CharId2)
+	end
+	Infinity_OnPortraitLClick(2)
+	local CharId3 = id
+	Infinity_UpdateLuaStats()
+	if Infinity_GetNumCharacters() > 2 then
+	table.insert(charTable, CharId3)
+	end
+	Infinity_OnPortraitLClick(3)
+	local CharId4 = id
+	Infinity_UpdateLuaStats()
+	if Infinity_GetNumCharacters() > 3 then
+	table.insert(charTable, CharId4)
+	end
+	Infinity_OnPortraitLClick(4)
+	local CharId5 = id
+	Infinity_UpdateLuaStats()
+	if Infinity_GetNumCharacters() > 4 then
+	table.insert(charTable, CharId5)
+	end
+	Infinity_OnPortraitLClick(5)
+	local CharId6 = id
+	Infinity_UpdateLuaStats()
+	if Infinity_GetNumCharacters() > 5 then
+	table.insert(charTable, CharId6)
+	end
+
+end
+
+rgInvId = 0
+rgInvChar = ''
+rgCurChar = ''
+rgPaperdollSwap = 0
+RgInvPartyModeHover = 1
+
+`
+	
+	menu
+{
+	name 'INVENTORY'
+	align center center
+	ignoreEsc
+	size 1024 768
+	 
+	onOpen 
+	"	
+		
+		Infinity_ActivateInventory()
+		pushSidebars()
+		doubleClickEventScheduled = nil
+		updateSlots()
+		
+		if SkinsOptionsSliders[2][6] == 0 then
+		Infinity_PushMenu('INVENTORY_CLASSIC')
+		else
+		Infinity_PushMenu('INVENTORY_SHARED')
+		end
+		
+		showButton = false
+	"
+	onClose 
+	"
+		Infinity_PopMenu('INVENTORY_CLASSIC')
+		Infinity_PopMenu('INVENTORY_SHARED')
+		
+		Infinity_PopMenu('JOURNAL_NEW')
+		Infinity_PopMenu('JOURNAL_NEW_MODE')
+		Infinity_PopMenu('JOURNAL_NEW_BESTIARY')
+		Infinity_PopMenu('JOURNAL_NEW_ORIGINAL')
+		
+		popSidebars()
+	
+	"
+	button
+	{
+		area 0 0 0 0
+		bam ""
+		sequence 0
+	}
+}
+menu
+{
+	name 'dummy_01'
+	align center center
+	ignoreEsc
+	size 1024 768
+	~
+	
+//================\\
+// 03. Start menu \\
+//================\\
+
+	REPLACE_TEXTUALLY ~onOpen "[%TAB%%LNL%%MNL%%WNL%]+e:GetObjectGame():SetCampaign('PST')+[%TAB%%LNL%%MNL%%WNL%]+Infinity_PushMenu('START_MAIN')+[%TAB%%LNL%%MNL%%WNL%]+Infinity_SetBackground('BACKGROUND_START')+[%TAB%%LNL%%MNL%%WNL%]+"~
+	
+	~--szef_03 (Start_menu)
+	onOpen "
+		e:GetObjectGame():SetCampaign('PST')
+		Infinity_PushMenu('START_MAIN')
+		Infinity_SetBackground('BACKGROUND_START')
+		SkinsOptionsSliders[1][6] = Infinity_GetINIValue('Graphics','Dialogue Box Skin',0)
+		SkinsOptionsSliders[2][6] = Infinity_GetINIValue('Graphics','Inventory Skin',0)
+		SkinsOptionsSliders[3][6] = Infinity_GetINIValue('Graphics','Journal Screen',0)
+		
+	"~
+	
+//=======================\\	
+// 04. World dialog menu \\
+//=======================\\
+	
+	REPLACE_TEXTUALLY ~menu[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+name 'WORLD_DIALOG'+[%TAB%%LNL%%MNL%%WNL%]+offset 0 0+[%TAB%%LNL%%MNL%%WNL%]+align center bottom+[%TAB%%LNL%%MNL%%WNL%]+ignoreEsc+[%TAB%%LNL%%MNL%%WNL%]+exclusiveFocus+[%TAB%%LNL%%MNL%%WNL%]+size 1024 297+[%TAB%%LNL%%MNL%%WNL%]+onOpen+[%TAB%%LNL%%MNL%%WNL%]+"+[%TAB%%LNL%%MNL%%WNL%]+Infinity_SetBackground('BACKGROUND_DIALOG')+[%TAB%%LNL%%MNL%%WNL%]+if(dialogViewMode) then+[%TAB%%LNL%%MNL%%WNL%]+--responses from last conversation might not have been cleared yet.+[%TAB%%LNL%%MNL%%WNL%]+clearDialogResponses()+[%TAB%%LNL%%MNL%%WNL%]+end+[%TAB%%LNL%%MNL%%WNL%]+--start the dialog at the current bottom, new responses will scroll in.+[%TAB%%LNL%%MNL%%WNL%]+chatboxJumpToBottom = 1+[%TAB%%LNL%%MNL%%WNL%]+if(isTouchActionbar() and not dialogViewMode) then+[%TAB%%LNL%%MNL%%WNL%]+Infinity_PushMenu('WORLD_DIALOG_LEFT')+[%TAB%%LNL%%MNL%%WNL%]+Infinity_PushMenu('WORLD_DIALOG_RIGHT')+[%TAB%%LNL%%MNL%%WNL%]+end+[%TAB%%LNL%%MNL%%WNL%]+popSidebars()+[%TAB%%LNL%%MNL%%WNL%]+"+[%TAB%%LNL%%MNL%%WNL%]+onClose+[%TAB%%LNL%%MNL%%WNL%]+"+[%TAB%%LNL%%MNL%%WNL%]+Infinity_SetBackground(nil)+[%TAB%%LNL%%MNL%%WNL%]+Infinity_PopMenu('WORLD_DIALOG_LEFT')+[%TAB%%LNL%%MNL%%WNL%]+Infinity_PopMenu('WORLD_DIALOG_RIGHT')+[%TAB%%LNL%%MNL%%WNL%][%TAB%%LNL%%MNL%%WNL%]+pushSidebars()+[%TAB%%LNL%%MNL%%WNL%]+dialogViewMode = nil+[%TAB%%LNL%%MNL%%WNL%]+"+[%TAB%%LNL%%MNL%%WNL%]+list+[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+column+[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+width 100+[%TAB%%LNL%%MNL%%WNL%]+text+[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+area 0 0 -1 -1+[%TAB%%LNL%%MNL%%WNL%]+text lua "getDialogEntryText(rowNumber)"+[%TAB%%LNL%%MNL%%WNL%]+text style "normal"+[%TAB%%LNL%%MNL%%WNL%]+text highlight 1+[%TAB%%LNL%%MNL%%WNL%]+indent 1+[%TAB%%LNL%%MNL%%WNL%]+}+[%TAB%%LNL%%MNL%%WNL%]+}+[%TAB%%LNL%%MNL%%WNL%]+name "worldPlayerDialogChoicesList"+[%TAB%%LNL%%MNL%%WNL%]+area 226 24 580 204+[%TAB%%LNL%%MNL%%WNL%]+rowheight dynamic+[%TAB%%LNL%%MNL%%WNL%]+table "dialogTable"+[%TAB%%LNL%%MNL%%WNL%]+var "worldPlayerDialogSelection"+[%TAB%%LNL%%MNL%%WNL%]+scrollbar	'CGSCRL1'+[%TAB%%LNL%%MNL%%WNL%]+scrollbar func "chatboxScroll"+[%TAB%%LNL%%MNL%%WNL%]+hideHighlight+[%TAB%%LNL%%MNL%%WNL%]+scrollbar force 1+[%TAB%%LNL%%MNL%%WNL%]+ignoreFocus 1+[%TAB%%LNL%%MNL%%WNL%]+actionEnter+[%TAB%%LNL%%MNL%%WNL%]+"+[%TAB%%LNL%%MNL%%WNL%]+if(gameOptions.m_bConfirmDialog == true) then return end+[%TAB%%LNL%%MNL%%WNL%]+if(not dialogTable\[mouseoverRow\] or not getDialogRowClickable(mouseoverRow)) then~
+	
+	~--szef_04 (World dialog menu)
+
+	menu 
+{
+	name 'WORLD_DIALOG'
+	offset 0 0
+	align center bottom
+	ignoreEsc
+	exclusiveFocus
+	size 1024 297
+	onOpen
+	"	
+		if SkinsOptionsSliders[1][6] == 0 then
+		Infinity_PushMenu('BACKGROUND_DIALOG')
+		elseif SkinsOptionsSliders[1][6] == 1 then
+		Infinity_PushMenu('PORTRAITS_BACKGROUND_DIALOG')
+		elseif SkinsOptionsSliders[1][6] == 2 then
+		Infinity_PushMenu('SDB_BACKGROUND_DIALOG')
+		else
+		Infinity_PushMenu('TTON_BACKGROUND_DIALOG')
+		end
+		
+		if(dialogViewMode) then
+			--responses from last conversation might not have been cleared yet.
+			clearDialogResponses()	
+		end
+		
+
+		--start the dialog at the current bottom, new responses will scroll in.
+		chatboxJumpToBottom = 1
+		if(isTouchActionbar() and not dialogViewMode) then
+			Infinity_PushMenu('WORLD_DIALOG_LEFT')
+			Infinity_PushMenu('WORLD_DIALOG_RIGHT')
+		end
+		popSidebars()
+	
+	"
+	onClose
+	" 	
+	
+		popSidebars()
+		Infinity_PopMenu('BACKGROUND_DIALOG')
+		Infinity_PopMenu('PORTRAITS_BACKGROUND_DIALOG')
+		Infinity_PopMenu('SDB_BACKGROUND_DIALOG')
+		Infinity_PopMenu('TTON_BACKGROUND_DIALOG')
+		Infinity_PopMenu('ALT_BOTTOM_BACKGROUND_DIALOG')
+		Infinity_SetBackground(nil)
+		
+		Infinity_PopMenu('WORLD_DIALOG_LEFT')
+		Infinity_PopMenu('WORLD_DIALOG_RIGHT')
+		
+		pushSidebars()
+		dialogViewMode = 0
+		
+	" 
+			text
+			{
+				area 0 0 -1 -1
+				text "..."
+				text style "normal"
+			}
+}
+
+menu
+{
+	name 'dummy_02'
+	offset 0 0
+	align center bottom
+	ignoreEsc
+	exclusiveFocus
+	size 1024 297
+	list
+	{
+		column
+		{
+			width 100
+			text
+			{
+				area 0 0 -1 -1
+				text lua "getDialogEntryText(rowNumber)"
+				text style "normal"
+				text highlight 1
+				indent 1
+			}
+		}
+		name "worldPlayerDialogChoicesList"
+		area 226 24 580 204
+		rowheight dynamic
+		table "dialogTable"
+		var "worldPlayerDialogSelection"
+		scrollbar	'CGSCRL1'
+		scrollbar func "chatboxScroll"
+		hideHighlight
+		scrollbar force 1
+		ignoreFocus 1
+
+		actionEnter
+		"
+			if(gameOptions.m_bConfirmDialog == true) then return end
+			if(not dialogTable[mouseoverRow] or not getDialogRowClickable(mouseoverRow)) then~
+
+//================================================\\
+// 05. Inventroy menus/background & journal modes \\
+//================================================\\
+
+	REPLACE_TEXTUALLY ~~~~~menu[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+name 'BACKGROUND_RECORD'+[%TAB%%LNL%%MNL%%WNL%]+align center center[%TAB%%LNL%%MNL%%WNL%]+label+[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+area 0 0 1366 768+[%TAB%%LNL%%MNL%%WNL%]+mosaic 'RECBG'+[%TAB%%LNL%%MNL%%WNL%]+}+[%TAB%%LNL%%MNL%%WNL%]+}~~~~~
+	
+	~~~~~menu
+{
+	name 'BACKGROUND_RECORD'
+	align center center
+	label
+	{
+		area 0 0 1366 768
+		mosaic 'RECBG'
+	}
+}
+
+--szef_05 (Inventroy menus/background & journal modes)
+menu 
+{
+	name 'INVENTORY_CLASSIC'
+	align center center
+	ignoreEsc
+	size 1024 768
+	greyscale lua "characters[id].HP.current <= 0"
+	interactable lua "characters[id].HP.current > 0"
+	
+	onOpen
+	" 
+	pushSidebars()
+	Infinity_SetBackground('BACKGROUND_INVENTORY')
+	"
+	onClose
+	"
+	popSidebars()
+	Infinity_SetBackground(nil)
+	"
+	button
+	{
+		area 174 94 208 282
+		paperdoll 1
+		actiondrag "Infinity_SwapWithAppearance()"
+	}
+	label
+	{
+		area 403 536 47 50
+		bam "contback"
+	}
+	label
+	{
+		area 400 514 53 20
+		text lua "game:GetSelectedCarried() .. 'LB'"
+		text style "normal"
+		text color lua "getEncumbranceColor()"
+		align left center
+	}
+	label
+	{
+		area 400 590 53 21
+		text lua "game:GetSelectedMaxEncumbrance() .. 'LB'"
+		text style "normal"
+		text color lua "getEncumbranceColor()"
+		align right center
+	}
+	
+	label
+	{
+		area 158 504 187 30
+		text lua "characters[id].name"
+		text style "label"
+	}
+	label
+	{
+		area 890 453 48 24
+		text lua "Infinity_GetCurrentGroundPage()+1 .. '/' .. Infinity_GetMaxGroundPage()+1"
+		text style "label"
+		align center center
+	}
+	label
+	{
+		area 880 102 78 23
+		text lua "characters[id].gold"
+		text style "gold"
+	}
+	label
+	{
+		area 158 553 187 32
+		text lua "characters[id].class"
+		text style "label"
+	}
+
+	text
+	{
+		area 3 464 60 33
+		text "AC_LABEL"
+		text style "label_parchment"
+		text font "EXOCET"
+		text point 26
+		text shadow 1
+		tooltip "ARMOR_CLASS_TOOLTIP"
+	}
+	text
+	{
+		area 19 496 31 20
+		text lua "characters[id].AC.current"
+		text style "label"
+		tooltip "ARMOR_CLASS_TOOLTIP"
+	}
+	
+	label
+	{
+		area 68 539 52 75
+		mosaic "icHPMan"
+	}
+	text
+	{
+		area 63 548 62 27
+		text lua "characters[id].HP.current"
+		text style "label"
+		tooltip "CURRENT_HP_TOOLTIP"
+	}
+	text
+	{
+		area 63 575 62 27
+		text lua "characters[id].HP.max"
+		text style "label"
+		tooltip "MAX_HP_TOOLTIP"
+	}
+	text
+	{
+		area 447 451 362 32
+		text lua "TEXT_inventoryError"
+		scrollbar 'CGSCRL1'
+		text style normal
+		text align left center
+	}
+	
+	button
+    {
+        area 507 355 43 43
+        bam "g-bbclaw"
+        text lua "getBBGemarielWeaponSlot()"
+        --text style "normal_parchment"
+		tooltip "GEMARIEL_WS_TOOLTIP"
+        actionAlt "Infinity_PushMenu('ITEM_DESCRIPTION_GEMARIEL_WEAPON_SLOT')"
+    }
+
+	slot {name "slot_inv_1"		area 507 355 43 43	bam "SLOTSWRD"	sequence 0	slotinfo "characters[id].equipment.weapon0"	highlight selected 1		}
+	slot {name "slot_inv_2"		area 557 355 43 43	bam "SLOTSWRD"	sequence 1	slotinfo "characters[id].equipment.weapon1"	highlight selected 1		}
+	slot {name "slot_inv_3"		area 608 355 43 43	bam "SLOTSWRD"	sequence 2	slotinfo "characters[id].equipment.weapon2"	highlight selected 1		}
+	slot {name "slot_inv_4"		area 658 355 43 43	bam "SLOTSWRD"	sequence 3	slotinfo "characters[id].equipment.weapon3"	highlight selected 1		}
+	
+	slot {name "slot_inv_5"		area 529 112 43 43	bam "SLOTITM"	sequence 0	slotinfo "characters[id].equipment.personal0"	highlight selected 1	}
+	slot {name "slot_inv_6"		area 579 112 43 43	bam "SLOTITM"	sequence 1	slotinfo "characters[id].equipment.personal1"	highlight selected 1	}
+	slot {name "slot_inv_7"		area 630 112 43 43	bam "SLOTITM"	sequence 2	slotinfo "characters[id].equipment.personal2"	highlight selected 1	}
+	slot {name "slot_inv_8"		area 681 112 43 43	bam "SLOTITM"	sequence 3	slotinfo "characters[id].equipment.personal3"	highlight selected 1	}
+	slot {name "slot_inv_9"		area 731 112 43 43	bam "SLOTITM"	sequence 4	slotinfo "characters[id].equipment.personal4"	highlight selected 1	}
+	
+	slot {name "slot_inv_11"	area 416 142 48 48	bam "IVSLOT"	sequence 9	slotinfo "characters[id].equipment.chest0"			highlight selected 1}
+	slot {name "slot_inv_12"	area 405 318 48 48	bam "IVSLOT"	sequence 0	slotinfo "characters[id].equipment.wrist0"			highlight selected 1}
+	slot {name "slot_inv_13"	area 386 52 48 48	bam "IVSLOT"	sequence 1	slotinfo "characters[id].equipment.earringleft0"	highlight selected 1}
+	slot {name "slot_inv_14"	area 121 52 48 48	bam "IVSLOT"	sequence 2	slotinfo "characters[id].equipment.earringright0"	highlight selected 1}
+	
+	slot {name "slot_inv_15"	area 518 233 43 43	bam "SLOTARRW"	sequence 0	slotinfo "characters[id].equipment.quiver0"			highlight selected 1}
+	slot {name "slot_inv_16"	area 569 233 43 43	bam "SLOTARRW"	sequence 1	slotinfo "characters[id].equipment.quiver1"			highlight selected 1}
+	slot {name "slot_inv_17"	area 620 233 43 43	bam "SLOTARRW"	sequence 2	slotinfo "characters[id].equipment.quiver2"			highlight selected 1}
+	slot {name "slot_inv_18"	area 671 233 43 43	bam "SLOTARRW"	sequence 3	slotinfo "characters[id].equipment.quiver3"			highlight selected 1}
+	slot {name "slot_inv_19"	area 721 233 43 43	bam "SLOTARRW"	sequence 4	slotinfo "characters[id].equipment.quiver4"			highlight selected 1}
+	
+	slot {name "slot_inv_21"	area 142 412 48 48	bam "IVSLOT"	sequence 8	slotinfo "characters[id].equipment.tattoo0"			highlight selected 1}
+	slot {name "slot_inv_22"	area 426 231 48 48	bam "IVSLOT"	sequence 9	slotinfo "characters[id].equipment.ring0"			highlight selected 1}
+	slot {name "slot_inv_23"	area 77 231 48 48	bam "IVSLOT"	sequence 0	slotinfo "characters[id].equipment.ring1"			highlight selected 1}
+	slot {name "slot_inv_24"	area 84 142 48 48	bam "IVSLOT"	sequence 1	slotinfo "characters[id].equipment.tattoo1"			highlight selected 1}
+	slot {name "slot_inv_25"	area 99 319 48 48	bam "IVSLOT"	sequence 2	slotinfo "characters[id].equipment.hand0"			highlight selected 1}
+	slot {name "slot_inv_26"	area 360 411 48 48	bam "IVSLOT"	sequence 3	slotinfo "characters[id].equipment.tattoo2"			highlight selected 1}
+
+	slot {name "slot_inv_30"	area 478 515 43 43	bam "IVSLOT"	sequence 4	slotinfo "characters[id].equipment.group0"			highlight selected 1}
+	slot {name "slot_inv_31"	area 478 565 43 43	bam "IVSLOT"	sequence 5	slotinfo "characters[id].equipment.group1"			highlight selected 1}
+	slot {name "slot_inv_32"	area 528 515 43 43	bam "IVSLOT"	sequence 6	slotinfo "characters[id].equipment.group2"			highlight selected 1}
+	slot {name "slot_inv_33"	area 528 565 43 43	bam "IVSLOT"	sequence 7	slotinfo "characters[id].equipment.group3"			highlight selected 1}
+	slot {name "slot_inv_34"	area 578 515 43 43	bam "IVSLOT"	sequence 8	slotinfo "characters[id].equipment.group4"			highlight selected 1}
+	slot {name "slot_inv_35"	area 578 565 43 43	bam "IVSLOT"	sequence 9	slotinfo "characters[id].equipment.group5"			highlight selected 1}
+	slot {name "slot_inv_36"	area 628 515 43 43	bam "IVSLOT"	sequence 0	slotinfo "characters[id].equipment.group6"			highlight selected 1}
+	slot {name "slot_inv_37"	area 628 565 43 43	bam "IVSLOT"	sequence 1	slotinfo "characters[id].equipment.group7"			highlight selected 1}
+	slot {name "slot_inv_38"	area 678 515 43 43	bam "IVSLOT"	sequence 2	slotinfo "characters[id].equipment.group8"			highlight selected 1}
+	slot {name "slot_inv_39"	area 678 565 43 43	bam "IVSLOT"	sequence 3	slotinfo "characters[id].equipment.group9"			highlight selected 1}
+	slot {name "slot_inv_40"	area 729 515 43 43	bam "IVSLOT"	sequence 4	slotinfo "characters[id].equipment.group10"			highlight selected 1}
+	slot {name "slot_inv_41"	area 729 565 43 43	bam "IVSLOT"	sequence 5	slotinfo "characters[id].equipment.group11"			highlight selected 1}
+	slot {name "slot_inv_42"	area 778 515 43 43	bam "IVSLOT"	sequence 6	slotinfo "characters[id].equipment.group12"			highlight selected 1}
+	slot {name "slot_inv_43"	area 778 565 43 43	bam "IVSLOT"	sequence 7	slotinfo "characters[id].equipment.group13"			highlight selected 1}
+	slot {name "slot_inv_44"	area 829 515 43 43	bam "IVSLOT"	sequence 8	slotinfo "characters[id].equipment.group14"			highlight selected 1}
+	slot {name "slot_inv_45"	area 829 565 43 43	bam "IVSLOT"	sequence 9	slotinfo "characters[id].equipment.group15"			highlight selected 1}
+	slot {name "slot_inv_46"	area 879 515 43 43	bam "IVSLOT"	sequence 0	slotinfo "characters[id].equipment.group16"			highlight selected 1}
+	slot {name "slot_inv_47"	area 878 565 43 43	bam "IVSLOT"	sequence 1	slotinfo "characters[id].equipment.group17"			highlight selected 1}
+	slot {name "slot_inv_48"	area 929 515 43 43	bam "IVSLOT"	sequence 2	slotinfo "characters[id].equipment.group18"			highlight selected 1}
+	slot {name "slot_inv_49"	area 929 565 43 43	bam "IVSLOT"	sequence 3	slotinfo "characters[id].equipment.group19"			highlight selected 1}
+
+	slot {name "slot_inv_68"	area 868 197 43 43	bam "IVSLOT"	sequence 4	slotinfo "characters[id].equipment.ground0"			highlight selected 1}
+	slot {name "slot_inv_69"	area 868 248 43 43	bam "IVSLOT"	sequence 5	slotinfo "characters[id].equipment.ground1"			highlight selected 1}
+	slot {name "slot_inv_70"	area 868 299 43 43	bam "IVSLOT"	sequence 6	slotinfo "characters[id].equipment.ground2"			highlight selected 1}
+	slot {name "slot_inv_71"	area 868 350 43 43	bam "IVSLOT"	sequence 7	slotinfo "characters[id].equipment.ground3"			highlight selected 1}
+	slot {name "slot_inv_72"	area 868 400 43 43	bam "IVSLOT"	sequence 8	slotinfo "characters[id].equipment.ground4"			highlight selected 1}
+	slot {name "slot_inv_73"	area 918 197 43 43	bam "IVSLOT"	sequence 9	slotinfo "characters[id].equipment.ground5"			highlight selected 1}
+	slot {name "slot_inv_74"	area 918 248 43 43	bam "IVSLOT"	sequence 0	slotinfo "characters[id].equipment.ground6"			highlight selected 1}
+	slot {name "slot_inv_75"	area 918 299 43 43	bam "IVSLOT"	sequence 1	slotinfo "characters[id].equipment.ground7"			highlight selected 1}
+	slot {name "slot_inv_76"	area 918 350 43 43	bam "IVSLOT"	sequence 2	slotinfo "characters[id].equipment.ground8"			highlight selected 1}
+	slot {name "slot_inv_77"	area 918 400 43 43	bam "IVSLOT"	sequence 3	slotinfo "characters[id].equipment.ground9"			highlight selected 1}
+
+	button
+	{
+		area 856 452 29 28
+		bam "ARROBUTT"
+		sequence 0
+		action
+		"
+			Infinity_OnGroundPage(-1)
+		"
+	}
+	button
+	{
+		area 946 452 29 28
+		bam "ARROBUTT"
+		sequence 1
+		action
+		"
+			Infinity_OnGroundPage(1)
+		"
+	}
+	label
+	{
+		area 860 21 115 96
+		mosaic icgold
+	}
+	label
+	{
+		area 905 149 19 47
+		mosaic icpickup
+	}
+	button
+	{
+		area 974 12 50 50
+		bam "XBUTT"
+		action
+		"
+			e:GetActiveEngine():SelectEngine(worldScreen)
+		"
+	}
+}
+menu
+{
+	name 'INVENTORY_SHARED'
+	align center center
+	ignoreEsc
+	size 1024 768
+
+	onOpen
+	"
+	pushSidebars()
+	Infinity_SetBackground('BACKGROUND_INVENTORY_SHARED')
+	"
+	onClose
+	"
+	popSidebars()
+	Infinity_SetBackground(nil)
+	"
+	button
+	{
+		area 140 278 184 248
+		paperdoll 1
+		actiondrag "Infinity_SwapWithAppearance()"
+	}
+	label
+	{
+		area 1010 614 40 38
+		bam "contback"
+	}
+	label
+	{
+		area 1010 594 40 20
+		text lua "game:GetSelectedCarried() .. 'LB'"
+		text style "normal"
+		text color lua "getEncumbranceColor()"
+		align left center
+	}
+	label
+	{
+		area 1010 652 40 21
+		text lua "game:GetSelectedMaxEncumbrance() .. 'LB'"
+		text style "normal"
+		text color lua "getEncumbranceColor()"
+		align right center
+	}
+
+	label
+	{
+		area 350 6 194 44
+		text lua "characters[id].name"
+		text style "label"
+	}
+	label
+	{
+		area 408 640 65 23
+		text lua "characters[id].gold"
+		text style "gold"
+	}
+	text
+	{
+		area 388 129 50 27
+		text "AC_LABEL"
+		text style "label_parchment"
+		text font "EXOCET"
+		text point 26
+		text shadow 1
+		tooltip "ARMOR_CLASS_TOOLTIP"
+	}
+	text
+	{
+		area 398 156 31 19
+		text lua "characters[id].AC.current"
+		text style "label"
+		tooltip "ARMOR_CLASS_TOOLTIP"
+	}
+	text
+	{
+		area 450 202 50 35
+		text lua "characters[id].HP.current"
+		text style "label"
+		tooltip "CURRENT_HP_TOOLTIP"
+	}
+	text
+	{
+		area 500 202 52 35
+		text lua "characters[id].HP.max"
+		text style "label"
+		tooltip "MAX_HP_TOOLTIP"
+	}
+	text
+	{
+		area 80 634 308 39
+		text lua "TEXT_inventoryError"
+		scrollbar 'CGSCRL1'
+		text style normal
+		text align left center
+	}
+
+	text
+	{
+		area		364 83 168 14
+		text lua "Infinity_FetchString(39596)"
+		text style  'label'
+		text color 'D'
+	}
+	label
+	{
+		area		364 102 168 14
+		text lua "characters[id].Stats.bestenemy.current"
+		text style  'label'
+	}
+	label
+	{
+		area 350 43 195 25
+		text lua "characters[id].class"
+		text style "label"
+	}
+	button
+    {
+        area 84 281 48 48
+        bam "g-bbclaw"
+        text lua "getBBGemarielWeaponSlot()"
+        --text style "normal_parchment"
+		tooltip "GEMARIEL_WS_TOOLTIP"
+        actionAlt "Infinity_PushMenu('ITEM_DESCRIPTION_GEMARIEL_WEAPON_SLOT')"
+    }
+
+	slot {name "slot_inv_1"		area 84 281 48 48	bam "SLOTSWRD"	sequence 0	slotinfo "characters[id].equipment.weapon0"	highlight selected 1		}
+	slot {name "slot_inv_2"		area 84 348 48 48	bam "SLOTSWRD"	sequence 1	slotinfo "characters[id].equipment.weapon1"	highlight selected 1		}
+	slot {name "slot_inv_3"		area 84 412 48 48	bam "SLOTSWRD"	sequence 2	slotinfo "characters[id].equipment.weapon2"	highlight selected 1		}
+	slot {name "slot_inv_4"		area 84 476 48 48	bam "SLOTSWRD"	sequence 3	slotinfo "characters[id].equipment.weapon3"	highlight selected 1		}
+
+
+
+	slot {name "slot_inv_11"	area 140 221 48 48	bam "IVSLOT"	sequence 9	slotinfo "characters[id].equipment.chest0"			highlight selected 1}
+	slot {name "slot_inv_12"	area 333 348 48 48	bam "IVSLOT"	sequence 0	slotinfo "characters[id].equipment.wrist0"			highlight selected 1}
+	slot {name "slot_inv_13"	area 276 221 48 48	bam "IVSLOT"	sequence 1	slotinfo "characters[id].equipment.earringleft0"		highlight selected 1}
+	slot {name "slot_inv_14"	area 208 221 48 48	bam "IVSLOT"	sequence 2	slotinfo "characters[id].equipment.earringright0"		highlight selected 1}
+
+	slot {name "slot_inv_15"	area 12 280 40 40	bam "SLOTARRW"	sequence 0	slotinfo "characters[id].equipment.quiver0"			highlight selected 1}
+	slot {name "slot_inv_16"	area 12 332 40 40	bam "SLOTARRW"	sequence 1	slotinfo "characters[id].equipment.quiver1"			highlight selected 1}
+	slot {name "slot_inv_17"	area 12 384 40 40	bam "SLOTARRW"	sequence 2	slotinfo "characters[id].equipment.quiver2"			highlight selected 1}
+	slot {name "slot_inv_18"	area 12 436 40 40	bam "SLOTARRW"	sequence 3	slotinfo "characters[id].equipment.quiver3"			highlight selected 1}
+	slot {name "slot_inv_19"	area 12 486 40 40	bam "SLOTARRW"	sequence 4	slotinfo "characters[id].equipment.quiver4"			highlight selected 1}
+
+	slot {name "slot_inv_21"	area 140 536 48 48	bam "IVSLOT"	sequence 8	slotinfo "characters[id].equipment.tattoo0"			highlight selected 1}
+	slot {name "slot_inv_22"	area 333 412 49 48	bam "IVSLOT"	sequence 9	slotinfo "characters[id].equipment.ring0"			highlight selected 1}
+	slot {name "slot_inv_23"	area 333 476 48 46	bam "IVSLOT"	sequence 0	slotinfo "characters[id].equipment.ring1"			highlight selected 1}
+	slot {name "slot_inv_24"	area 208 536 48 48	bam "IVSLOT"	sequence 1	slotinfo "characters[id].equipment.tattoo1"			highlight selected 1}
+	slot {name "slot_inv_25"	area 333 276 48 48	bam "IVSLOT"	sequence 2	slotinfo "characters[id].equipment.hand0"			highlight selected 1}
+	slot {name "slot_inv_26"	area 276 536 48 48	bam "IVSLOT"	sequence 3	slotinfo "characters[id].equipment.tattoo2"			highlight selected 1}
+
+	slot {name "slot_inv_5"		area 412 276 40 40	bam "SLOTITM"	sequence 0	slotinfo "characters[id].equipment.personal0"	highlight selected 1	}
+	slot {name "slot_inv_6"		area 412 330 40 40	bam "SLOTITM"	sequence 1	slotinfo "characters[id].equipment.personal1"	highlight selected 1	}
+	slot {name "slot_inv_7"		area 412 382 40 40	bam "SLOTITM"	sequence 2	slotinfo "characters[id].equipment.personal2"	highlight selected 1	}
+	slot {name "slot_inv_8"		area 412 432 40 40	bam "SLOTITM"	sequence 3	slotinfo "characters[id].equipment.personal3"	highlight selected 1	}
+	slot {name "slot_inv_9"		area 412 482 40 40	bam "SLOTITM"	sequence 4	slotinfo "characters[id].equipment.personal4"	highlight selected 1	}
+
+
+	slot {name "slot_inv_30"	area 606 43 40 40	bam "IVSLOT"	sequence 4	slotinfo "characters[charTable[1]].equipment.group0" enabled "Infinity_GetNumCharacters() > 0" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('1') end" 			highlight selected 1}
+	slot {name "slot_inv_31"	area 646 43 40 40	bam "IVSLOT"	sequence 5	slotinfo "characters[charTable[1]].equipment.group1" enabled "Infinity_GetNumCharacters() > 0" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('1') end" 			highlight selected 1}
+	slot {name "slot_inv_32"	area 686 43 40 40	bam "IVSLOT"	sequence 6	slotinfo "characters[charTable[1]].equipment.group2" enabled "Infinity_GetNumCharacters() > 0" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('1') end" 			highlight selected 1}
+	slot {name "slot_inv_33"	area 726 43 40 40	bam "IVSLOT"	sequence 7	slotinfo "characters[charTable[1]].equipment.group3" enabled "Infinity_GetNumCharacters() > 0" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('1') end" 			highlight selected 1}
+	slot {name "slot_inv_34"	area 766 43 40 40	bam "IVSLOT"	sequence 8	slotinfo "characters[charTable[1]].equipment.group4" enabled "Infinity_GetNumCharacters() > 0" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('1') end" 			highlight selected 1}
+	slot {name "slot_inv_35"	area 806 43 40 40	bam "IVSLOT"	sequence 9	slotinfo "characters[charTable[1]].equipment.group5" enabled "Infinity_GetNumCharacters() > 0" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('1') end" 			highlight selected 1}
+	slot {name "slot_inv_36"	area 846 43 40 40	bam "IVSLOT"	sequence 0	slotinfo "characters[charTable[1]].equipment.group6" enabled "Infinity_GetNumCharacters() > 0" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('1') end" 			highlight selected 1}
+	slot {name "slot_inv_37"	area 886 43 40 40	bam "IVSLOT"	sequence 1	slotinfo "characters[charTable[1]].equipment.group7" enabled "Infinity_GetNumCharacters() > 0" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('1') end" 			highlight selected 1}
+	slot {name "slot_inv_38"	area 926 43 40 40	bam "IVSLOT"	sequence 2	slotinfo "characters[charTable[1]].equipment.group8" enabled "Infinity_GetNumCharacters() > 0" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('1') end" 			highlight selected 1}
+	slot {name "slot_inv_39"	area 966 43 40 40	bam "IVSLOT"	sequence 3	slotinfo "characters[charTable[1]].equipment.group9" enabled "Infinity_GetNumCharacters() > 0" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('1') end" 			highlight selected 1}
+	slot {name "slot_inv_40"	area 606 83 40 40	bam "IVSLOT"	sequence 4	slotinfo "characters[charTable[1]].equipment.group10" enabled "Infinity_GetNumCharacters() > 0" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('1') end" 			highlight selected 1}
+	slot {name "slot_inv_41"	area 646 83 40 40	bam "IVSLOT"	sequence 5	slotinfo "characters[charTable[1]].equipment.group11" enabled "Infinity_GetNumCharacters() > 0" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('1') end" 			highlight selected 1}
+	slot {name "slot_inv_42"	area 686 83 40 40	bam "IVSLOT"	sequence 6	slotinfo "characters[charTable[1]].equipment.group12" enabled "Infinity_GetNumCharacters() > 0" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('1') end" 			highlight selected 1}
+	slot {name "slot_inv_43"	area 726 83 40 40	bam "IVSLOT"	sequence 7	slotinfo "characters[charTable[1]].equipment.group13" enabled "Infinity_GetNumCharacters() > 0" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('1') end" 			highlight selected 1}
+	slot {name "slot_inv_44"	area 766 83 40 40	bam "IVSLOT"	sequence 8	slotinfo "characters[charTable[1]].equipment.group14" enabled "Infinity_GetNumCharacters() > 0" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('1') end" 			highlight selected 1}
+	slot {name "slot_inv_45"	area 806 83 40 40	bam "IVSLOT"	sequence 9	slotinfo "characters[charTable[1]].equipment.group15" enabled "Infinity_GetNumCharacters() > 0" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('1') end" 			highlight selected 1}
+	slot {name "slot_inv_46"	area 846 83 40 40	bam "IVSLOT"	sequence 0	slotinfo "characters[charTable[1]].equipment.group16" enabled "Infinity_GetNumCharacters() > 0" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('1') end" 			highlight selected 1}
+	slot {name "slot_inv_47"	area 886 83 40 40	bam "IVSLOT"	sequence 1	slotinfo "characters[charTable[1]].equipment.group17" enabled "Infinity_GetNumCharacters() > 0" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('1') end" 			highlight selected 1}
+	slot {name "slot_inv_48"	area 926 83 40 40	bam "IVSLOT"	sequence 2	slotinfo "characters[charTable[1]].equipment.group18" enabled "Infinity_GetNumCharacters() > 0" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('1') end" 			highlight selected 1}
+	slot {name "slot_inv_49"	area 966 83 40 40 	bam "IVSLOT"	sequence 3	slotinfo "characters[charTable[1]].equipment.group19" enabled "Infinity_GetNumCharacters() > 0" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('1') end" 			highlight selected 1}
+
+	slot {name "slot_inv_30"	area 606 135 40 40	bam "IVSLOT"	sequence 4	slotinfo "characters[charTable[2]].equipment.group0" enabled "Infinity_GetNumCharacters() > 1" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('2') end" 			highlight selected 1}
+	slot {name "slot_inv_31"	area 646 135 40 40	bam "IVSLOT"	sequence 5	slotinfo "characters[charTable[2]].equipment.group1" enabled "Infinity_GetNumCharacters() > 1" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('2') end" 			highlight selected 1}
+	slot {name "slot_inv_32"	area 686 135 40 40	bam "IVSLOT"	sequence 6	slotinfo "characters[charTable[2]].equipment.group2" enabled "Infinity_GetNumCharacters() > 1" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('2') end" 			highlight selected 1}
+	slot {name "slot_inv_33"	area 726 135 40 40	bam "IVSLOT"	sequence 7	slotinfo "characters[charTable[2]].equipment.group3" enabled "Infinity_GetNumCharacters() > 1" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('2') end" 			highlight selected 1}
+	slot {name "slot_inv_34"	area 766 135 40 40	bam "IVSLOT"	sequence 8	slotinfo "characters[charTable[2]].equipment.group4" enabled "Infinity_GetNumCharacters() > 1" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('2') end" 			highlight selected 1}
+	slot {name "slot_inv_35"	area 806 135 40 40	bam "IVSLOT"	sequence 9	slotinfo "characters[charTable[2]].equipment.group5" enabled "Infinity_GetNumCharacters() > 1" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('2') end" 			highlight selected 1}
+	slot {name "slot_inv_36"	area 846 135 40 40	bam "IVSLOT"	sequence 0	slotinfo "characters[charTable[2]].equipment.group6" enabled "Infinity_GetNumCharacters() > 1" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('2') end" 			highlight selected 1}
+	slot {name "slot_inv_37"	area 886 135 40 40	bam "IVSLOT"	sequence 1	slotinfo "characters[charTable[2]].equipment.group7" enabled "Infinity_GetNumCharacters() > 1" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('2') end" 			highlight selected 1}
+	slot {name "slot_inv_38"	area 926 135 40 40	bam "IVSLOT"	sequence 2	slotinfo "characters[charTable[2]].equipment.group8" enabled "Infinity_GetNumCharacters() > 1" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('2') end" 			highlight selected 1}
+	slot {name "slot_inv_39"	area 966 135 40 40	bam "IVSLOT"	sequence 3	slotinfo "characters[charTable[2]].equipment.group9" enabled "Infinity_GetNumCharacters() > 1" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('2') end" 			highlight selected 1}
+	slot {name "slot_inv_40"	area 606 175 40 40	bam "IVSLOT"	sequence 4	slotinfo "characters[charTable[2]].equipment.group10" enabled "Infinity_GetNumCharacters() > 1" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('2') end" 			highlight selected 1}
+	slot {name "slot_inv_41"	area 646 175 40 40	bam "IVSLOT"	sequence 5	slotinfo "characters[charTable[2]].equipment.group11" enabled "Infinity_GetNumCharacters() > 1" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('2') end" 			highlight selected 1}
+	slot {name "slot_inv_42"	area 686 175 40 40	bam "IVSLOT"	sequence 6	slotinfo "characters[charTable[2]].equipment.group12" enabled "Infinity_GetNumCharacters() > 1" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('2') end" 			highlight selected 1}
+	slot {name "slot_inv_43"	area 726 175 40 40	bam "IVSLOT"	sequence 7	slotinfo "characters[charTable[2]].equipment.group13" enabled "Infinity_GetNumCharacters() > 1" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('2') end" 			highlight selected 1}
+	slot {name "slot_inv_44"	area 766 175 40 40	bam "IVSLOT"	sequence 8	slotinfo "characters[charTable[2]].equipment.group14" enabled "Infinity_GetNumCharacters() > 1" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('2') end" 			highlight selected 1}
+	slot {name "slot_inv_45"	area 806 175 40 40	bam "IVSLOT"	sequence 9	slotinfo "characters[charTable[2]].equipment.group15" enabled "Infinity_GetNumCharacters() > 1" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('2') end" 			highlight selected 1}
+	slot {name "slot_inv_46"	area 846 175 40 40	bam "IVSLOT"	sequence 0	slotinfo "characters[charTable[2]].equipment.group16" enabled "Infinity_GetNumCharacters() > 1" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('2') end" 			highlight selected 1}
+	slot {name "slot_inv_47"	area 886 175 40 40	bam "IVSLOT"	sequence 1	slotinfo "characters[charTable[2]].equipment.group17" enabled "Infinity_GetNumCharacters() > 1" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('2') end" 			highlight selected 1}
+	slot {name "slot_inv_48"	area 926 175 40 40	bam "IVSLOT"	sequence 2	slotinfo "characters[charTable[2]].equipment.group18" enabled "Infinity_GetNumCharacters() > 1" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('2') end" 			highlight selected 1}
+	slot {name "slot_inv_49"	area 966 175 40 40 	bam "IVSLOT"	sequence 3	slotinfo "characters[charTable[2]].equipment.group19" enabled "Infinity_GetNumCharacters() > 1" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('2') end" 			highlight selected 1}
+
+	slot {name "slot_inv_30"	area 606 232 40 40	bam "IVSLOT"	sequence 4	slotinfo "characters[charTable[3]].equipment.group0" enabled "Infinity_GetNumCharacters() > 2" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('3') end" 			highlight selected 1}
+	slot {name "slot_inv_31"	area 646 232 40 40	bam "IVSLOT"	sequence 5	slotinfo "characters[charTable[3]].equipment.group1" enabled "Infinity_GetNumCharacters() > 2" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('3') end" 			highlight selected 1}
+	slot {name "slot_inv_32"	area 686 232 40 40	bam "IVSLOT"	sequence 6	slotinfo "characters[charTable[3]].equipment.group2" enabled "Infinity_GetNumCharacters() > 2" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('3') end" 			highlight selected 1}
+	slot {name "slot_inv_33"	area 726 232 40 40	bam "IVSLOT"	sequence 7	slotinfo "characters[charTable[3]].equipment.group3" enabled "Infinity_GetNumCharacters() > 2" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('3') end" 			highlight selected 1}
+	slot {name "slot_inv_34"	area 766 232 40 40	bam "IVSLOT"	sequence 8	slotinfo "characters[charTable[3]].equipment.group4" enabled "Infinity_GetNumCharacters() > 2" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('3') end" 			highlight selected 1}
+	slot {name "slot_inv_35"	area 806 232 40 40	bam "IVSLOT"	sequence 9	slotinfo "characters[charTable[3]].equipment.group5" enabled "Infinity_GetNumCharacters() > 2" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('3') end" 			highlight selected 1}
+	slot {name "slot_inv_36"	area 846 232 40 40	bam "IVSLOT"	sequence 0	slotinfo "characters[charTable[3]].equipment.group6" enabled "Infinity_GetNumCharacters() > 2" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('3') end" 			highlight selected 1}
+	slot {name "slot_inv_37"	area 886 232 40 40	bam "IVSLOT"	sequence 1	slotinfo "characters[charTable[3]].equipment.group7" enabled "Infinity_GetNumCharacters() > 2" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('3') end" 			highlight selected 1}
+	slot {name "slot_inv_38"	area 926 232 40 40	bam "IVSLOT"	sequence 2	slotinfo "characters[charTable[3]].equipment.group8" enabled "Infinity_GetNumCharacters() > 2" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('3') end" 			highlight selected 1}
+	slot {name "slot_inv_39"	area 966 232 40 40	bam "IVSLOT"	sequence 3	slotinfo "characters[charTable[3]].equipment.group9" enabled "Infinity_GetNumCharacters() > 2" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('3') end" 			highlight selected 1}
+	slot {name "slot_inv_40"	area 606 272 40 40	bam "IVSLOT"	sequence 4	slotinfo "characters[charTable[3]].equipment.group10" enabled "Infinity_GetNumCharacters() > 2" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('3') end" 			highlight selected 1}
+	slot {name "slot_inv_41"	area 646 272 40 40	bam "IVSLOT"	sequence 5	slotinfo "characters[charTable[3]].equipment.group11" enabled "Infinity_GetNumCharacters() > 2" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('3') end" 			highlight selected 1}
+	slot {name "slot_inv_42"	area 686 272 40 40	bam "IVSLOT"	sequence 6	slotinfo "characters[charTable[3]].equipment.group12" enabled "Infinity_GetNumCharacters() > 2" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('3') end" 			highlight selected 1}
+	slot {name "slot_inv_43"	area 726 272 40 40	bam "IVSLOT"	sequence 7	slotinfo "characters[charTable[3]].equipment.group13" enabled "Infinity_GetNumCharacters() > 2" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('3') end" 			highlight selected 1}
+	slot {name "slot_inv_44"	area 766 272 40 40	bam "IVSLOT"	sequence 8	slotinfo "characters[charTable[3]].equipment.group14" enabled "Infinity_GetNumCharacters() > 2" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('3') end" 			highlight selected 1}
+	slot {name "slot_inv_45"	area 806 272 40 40	bam "IVSLOT"	sequence 9	slotinfo "characters[charTable[3]].equipment.group15" enabled "Infinity_GetNumCharacters() > 2" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('3') end" 			highlight selected 1}
+	slot {name "slot_inv_46"	area 846 272 40 40	bam "IVSLOT"	sequence 0	slotinfo "characters[charTable[3]].equipment.group16" enabled "Infinity_GetNumCharacters() > 2" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('3') end" 			highlight selected 1}
+	slot {name "slot_inv_47"	area 886 272 40 40	bam "IVSLOT"	sequence 1	slotinfo "characters[charTable[3]].equipment.group17" enabled "Infinity_GetNumCharacters() > 2" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('3') end" 			highlight selected 1}
+	slot {name "slot_inv_48"	area 926 272 40 40	bam "IVSLOT"	sequence 2	slotinfo "characters[charTable[3]].equipment.group18" enabled "Infinity_GetNumCharacters() > 2" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('3') end" 			highlight selected 1}
+	slot {name "slot_inv_49"	area 966 272 40 40 	bam "IVSLOT"	sequence 3	slotinfo "characters[charTable[3]].equipment.group19" enabled "Infinity_GetNumCharacters() > 2" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('3') end" 			highlight selected 1}
+
+	slot {name "slot_inv_30"	area 606 324 40 40	bam "IVSLOT"	sequence 4	slotinfo "characters[charTable[4]].equipment.group0" enabled "Infinity_GetNumCharacters() > 3" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('4') end" 			highlight selected 1}
+	slot {name "slot_inv_31"	area 646 324 40 40	bam "IVSLOT"	sequence 5	slotinfo "characters[charTable[4]].equipment.group1" enabled "Infinity_GetNumCharacters() > 3" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('4') end" 			highlight selected 1}
+	slot {name "slot_inv_32"	area 686 324 40 40	bam "IVSLOT"	sequence 6	slotinfo "characters[charTable[4]].equipment.group2" enabled "Infinity_GetNumCharacters() > 3" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('4') end" 			highlight selected 1}
+	slot {name "slot_inv_33"	area 726 324 40 40	bam "IVSLOT"	sequence 7	slotinfo "characters[charTable[4]].equipment.group3" enabled "Infinity_GetNumCharacters() > 3" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('4') end" 			highlight selected 1}
+	slot {name "slot_inv_34"	area 766 324 40 40	bam "IVSLOT"	sequence 8	slotinfo "characters[charTable[4]].equipment.group4" enabled "Infinity_GetNumCharacters() > 3" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('4') end" 			highlight selected 1}
+	slot {name "slot_inv_35"	area 806 324 40 40	bam "IVSLOT"	sequence 9	slotinfo "characters[charTable[4]].equipment.group5" enabled "Infinity_GetNumCharacters() > 3" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('4') end" 			highlight selected 1}
+	slot {name "slot_inv_36"	area 846 324 40 40	bam "IVSLOT"	sequence 0	slotinfo "characters[charTable[4]].equipment.group6" enabled "Infinity_GetNumCharacters() > 3" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('4') end" 			highlight selected 1}
+	slot {name "slot_inv_37"	area 886 324 40 40	bam "IVSLOT"	sequence 1	slotinfo "characters[charTable[4]].equipment.group7" enabled "Infinity_GetNumCharacters() > 3" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('4') end" 			highlight selected 1}
+	slot {name "slot_inv_38"	area 926 324 40 40	bam "IVSLOT"	sequence 2	slotinfo "characters[charTable[4]].equipment.group8" enabled "Infinity_GetNumCharacters() > 3" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('4') end" 			highlight selected 1}
+	slot {name "slot_inv_39"	area 966 324 40 40	bam "IVSLOT"	sequence 3	slotinfo "characters[charTable[4]].equipment.group9" enabled "Infinity_GetNumCharacters() > 3" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('4') end" 			highlight selected 1}
+	slot {name "slot_inv_40"	area 606 364 40 40	bam "IVSLOT"	sequence 4	slotinfo "characters[charTable[4]].equipment.group10" enabled "Infinity_GetNumCharacters() > 3" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('4') end" 			highlight selected 1}
+	slot {name "slot_inv_41"	area 646 364 40 40	bam "IVSLOT"	sequence 5	slotinfo "characters[charTable[4]].equipment.group11" enabled "Infinity_GetNumCharacters() > 3" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('4') end" 			highlight selected 1}
+	slot {name "slot_inv_42"	area 686 364 40 40	bam "IVSLOT"	sequence 6	slotinfo "characters[charTable[4]].equipment.group12" enabled "Infinity_GetNumCharacters() > 3" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('4') end" 			highlight selected 1}
+	slot {name "slot_inv_43"	area 726 364 40 40	bam "IVSLOT"	sequence 7	slotinfo "characters[charTable[4]].equipment.group13" enabled "Infinity_GetNumCharacters() > 3" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('4') end" 			highlight selected 1}
+	slot {name "slot_inv_44"	area 766 364 40 40	bam "IVSLOT"	sequence 8	slotinfo "characters[charTable[4]].equipment.group14" enabled "Infinity_GetNumCharacters() > 3" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('4') end" 			highlight selected 1}
+	slot {name "slot_inv_45"	area 806 364 40 40	bam "IVSLOT"	sequence 9	slotinfo "characters[charTable[4]].equipment.group15" enabled "Infinity_GetNumCharacters() > 3" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('4') end" 			highlight selected 1}
+	slot {name "slot_inv_46"	area 846 364 40 40	bam "IVSLOT"	sequence 0	slotinfo "characters[charTable[4]].equipment.group16" enabled "Infinity_GetNumCharacters() > 3" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('4') end" 			highlight selected 1}
+	slot {name "slot_inv_47"	area 886 364 40 40	bam "IVSLOT"	sequence 1	slotinfo "characters[charTable[4]].equipment.group17" enabled "Infinity_GetNumCharacters() > 3" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('4') end" 			highlight selected 1}
+	slot {name "slot_inv_48"	area 926 364 40 40	bam "IVSLOT"	sequence 2	slotinfo "characters[charTable[4]].equipment.group18" enabled "Infinity_GetNumCharacters() > 3" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('4') end" 			highlight selected 1}
+	slot {name "slot_inv_49"	area 966 364 40 40 	bam "IVSLOT"	sequence 3	slotinfo "characters[charTable[4]].equipment.group19" enabled "Infinity_GetNumCharacters() > 3" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('4') end" 			highlight selected 1}
+
+	slot {name "slot_inv_30"	area 606 420 40 40	bam "IVSLOT"	sequence 4	slotinfo "characters[charTable[5]].equipment.group0" enabled "Infinity_GetNumCharacters() > 4" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('5') end" 			highlight selected 1}
+	slot {name "slot_inv_31"	area 646 420 40 40	bam "IVSLOT"	sequence 5	slotinfo "characters[charTable[5]].equipment.group1" enabled "Infinity_GetNumCharacters() > 4" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('5') end" 			highlight selected 1}
+	slot {name "slot_inv_32"	area 686 420 40 40	bam "IVSLOT"	sequence 6	slotinfo "characters[charTable[5]].equipment.group2" enabled "Infinity_GetNumCharacters() > 4" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('5') end" 			highlight selected 1}
+	slot {name "slot_inv_33"	area 726 420 40 40	bam "IVSLOT"	sequence 7	slotinfo "characters[charTable[5]].equipment.group3" enabled "Infinity_GetNumCharacters() > 4" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('5') end" 			highlight selected 1}
+	slot {name "slot_inv_34"	area 766 420 40 40	bam "IVSLOT"	sequence 8	slotinfo "characters[charTable[5]].equipment.group4" enabled "Infinity_GetNumCharacters() > 4" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('5') end" 			highlight selected 1}
+	slot {name "slot_inv_35"	area 806 420 40 40	bam "IVSLOT"	sequence 9	slotinfo "characters[charTable[5]].equipment.group5" enabled "Infinity_GetNumCharacters() > 4" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('5') end" 			highlight selected 1}
+	slot {name "slot_inv_36"	area 846 420 40 40	bam "IVSLOT"	sequence 0	slotinfo "characters[charTable[5]].equipment.group6" enabled "Infinity_GetNumCharacters() > 4" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('5') end" 			highlight selected 1}
+	slot {name "slot_inv_37"	area 886 420 40 40	bam "IVSLOT"	sequence 1	slotinfo "characters[charTable[5]].equipment.group7" enabled "Infinity_GetNumCharacters() > 4" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('5') end" 			highlight selected 1}
+	slot {name "slot_inv_38"	area 926 420 40 40	bam "IVSLOT"	sequence 2	slotinfo "characters[charTable[5]].equipment.group8" enabled "Infinity_GetNumCharacters() > 4" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('5') end" 			highlight selected 1}
+	slot {name "slot_inv_39"	area 966 420 40 40	bam "IVSLOT"	sequence 3	slotinfo "characters[charTable[5]].equipment.group9" enabled "Infinity_GetNumCharacters() > 4" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('5') end" 			highlight selected 1}
+	slot {name "slot_inv_40"	area 606 460 40 40	bam "IVSLOT"	sequence 4	slotinfo "characters[charTable[5]].equipment.group10" enabled "Infinity_GetNumCharacters() > 4" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('5') end" 			highlight selected 1}
+	slot {name "slot_inv_41"	area 646 460 40 40	bam "IVSLOT"	sequence 5	slotinfo "characters[charTable[5]].equipment.group11" enabled "Infinity_GetNumCharacters() > 4" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('5') end" 			highlight selected 1}
+	slot {name "slot_inv_42"	area 686 460 40 40	bam "IVSLOT"	sequence 6	slotinfo "characters[charTable[5]].equipment.group12" enabled "Infinity_GetNumCharacters() > 4" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('5') end" 			highlight selected 1}
+	slot {name "slot_inv_43"	area 726 460 40 40	bam "IVSLOT"	sequence 7	slotinfo "characters[charTable[5]].equipment.group13" enabled "Infinity_GetNumCharacters() > 4" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('5') end" 			highlight selected 1}
+	slot {name "slot_inv_44"	area 766 460 40 40	bam "IVSLOT"	sequence 8	slotinfo "characters[charTable[5]].equipment.group14" enabled "Infinity_GetNumCharacters() > 4" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('5') end" 			highlight selected 1}
+	slot {name "slot_inv_45"	area 806 460 40 40	bam "IVSLOT"	sequence 9	slotinfo "characters[charTable[5]].equipment.group15" enabled "Infinity_GetNumCharacters() > 4" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('5') end" 			highlight selected 1}
+	slot {name "slot_inv_46"	area 846 460 40 40	bam "IVSLOT"	sequence 0	slotinfo "characters[charTable[5]].equipment.group16" enabled "Infinity_GetNumCharacters() > 4" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('5') end" 			highlight selected 1}
+	slot {name "slot_inv_47"	area 886 460 40 40	bam "IVSLOT"	sequence 1	slotinfo "characters[charTable[5]].equipment.group17" enabled "Infinity_GetNumCharacters() > 4" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('5') end" 			highlight selected 1}
+	slot {name "slot_inv_48"	area 926 460 40 40	bam "IVSLOT"	sequence 2	slotinfo "characters[charTable[5]].equipment.group18" enabled "Infinity_GetNumCharacters() > 4" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('5') end" 			highlight selected 1}
+	slot {name "slot_inv_49"	area 966 460 40 40 	bam "IVSLOT"	sequence 3	slotinfo "characters[charTable[5]].equipment.group19" enabled "Infinity_GetNumCharacters() > 4" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('5') end" 			highlight selected 1}
+
+	slot {name "slot_inv_30"	area 606 511 40 40	bam "IVSLOT"	sequence 4	slotinfo "characters[charTable[6]].equipment.group0" enabled "Infinity_GetNumCharacters() > 5" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('6') end" 			highlight selected 1}
+	slot {name "slot_inv_31"	area 646 511 40 40	bam "IVSLOT"	sequence 5	slotinfo "characters[charTable[6]].equipment.group1" enabled "Infinity_GetNumCharacters() > 5" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('6') end" 			highlight selected 1}
+	slot {name "slot_inv_32"	area 686 511 40 40	bam "IVSLOT"	sequence 6	slotinfo "characters[charTable[6]].equipment.group2" enabled "Infinity_GetNumCharacters() > 5" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('6') end" 			highlight selected 1}
+	slot {name "slot_inv_33"	area 726 511 40 40	bam "IVSLOT"	sequence 7	slotinfo "characters[charTable[6]].equipment.group3" enabled "Infinity_GetNumCharacters() > 5" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('6') end" 			highlight selected 1}
+	slot {name "slot_inv_34"	area 766 511 40 40	bam "IVSLOT"	sequence 8	slotinfo "characters[charTable[6]].equipment.group4" enabled "Infinity_GetNumCharacters() > 5" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('6') end" 			highlight selected 1}
+	slot {name "slot_inv_35"	area 806 511 40 40	bam "IVSLOT"	sequence 9	slotinfo "characters[charTable[6]].equipment.group5" enabled "Infinity_GetNumCharacters() > 5" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('6') end" 			highlight selected 1}
+	slot {name "slot_inv_36"	area 846 511 40 40	bam "IVSLOT"	sequence 0	slotinfo "characters[charTable[6]].equipment.group6" enabled "Infinity_GetNumCharacters() > 5" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('6') end" 			highlight selected 1}
+	slot {name "slot_inv_37"	area 886 511 40 40	bam "IVSLOT"	sequence 1	slotinfo "characters[charTable[6]].equipment.group7" enabled "Infinity_GetNumCharacters() > 5" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('6') end" 			highlight selected 1}
+	slot {name "slot_inv_38"	area 926 511 40 40	bam "IVSLOT"	sequence 2	slotinfo "characters[charTable[6]].equipment.group8" enabled "Infinity_GetNumCharacters() > 5" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('6') end" 			highlight selected 1}
+	slot {name "slot_inv_39"	area 966 511 40 40	bam "IVSLOT"	sequence 3	slotinfo "characters[charTable[6]].equipment.group9" enabled "Infinity_GetNumCharacters() > 5" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('6') end" 			highlight selected 1}
+	slot {name "slot_inv_40"	area 606 551 40 40	bam "IVSLOT"	sequence 4	slotinfo "characters[charTable[6]].equipment.group10" enabled "Infinity_GetNumCharacters() > 5" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('6') end" 			highlight selected 1}
+	slot {name "slot_inv_41"	area 646 551 40 40	bam "IVSLOT"	sequence 5	slotinfo "characters[charTable[6]].equipment.group11" enabled "Infinity_GetNumCharacters() > 5" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('6') end" 			highlight selected 1}
+	slot {name "slot_inv_42"	area 686 551 40 40	bam "IVSLOT"	sequence 6	slotinfo "characters[charTable[6]].equipment.group12" enabled "Infinity_GetNumCharacters() > 5" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('6') end" 			highlight selected 1}
+	slot {name "slot_inv_43"	area 726 551 40 40	bam "IVSLOT"	sequence 7	slotinfo "characters[charTable[6]].equipment.group13" enabled "Infinity_GetNumCharacters() > 5" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('6') end" 			highlight selected 1}
+	slot {name "slot_inv_44"	area 766 551 40 40	bam "IVSLOT"	sequence 8	slotinfo "characters[charTable[6]].equipment.group14" enabled "Infinity_GetNumCharacters() > 5" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('6') end" 			highlight selected 1}
+	slot {name "slot_inv_45"	area 806 551 40 40	bam "IVSLOT"	sequence 9	slotinfo "characters[charTable[6]].equipment.group15" enabled "Infinity_GetNumCharacters() > 5" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('6') end" 			highlight selected 1}
+	slot {name "slot_inv_46"	area 846 551 40 40	bam "IVSLOT"	sequence 0	slotinfo "characters[charTable[6]].equipment.group16" enabled "Infinity_GetNumCharacters() > 5" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('6') end" 			highlight selected 1}
+	slot {name "slot_inv_47"	area 886 551 40 40	bam "IVSLOT"	sequence 1	slotinfo "characters[charTable[6]].equipment.group17" enabled "Infinity_GetNumCharacters() > 5" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('6') end" 			highlight selected 1}
+	slot {name "slot_inv_48"	area 926 551 40 40	bam "IVSLOT"	sequence 2	slotinfo "characters[charTable[6]].equipment.group18" enabled "Infinity_GetNumCharacters() > 5" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('6') end" 			highlight selected 1}
+	slot {name "slot_inv_49"	area 966 551 40 40 	bam "IVSLOT"	sequence 3	slotinfo "characters[charTable[6]].equipment.group19" enabled "Infinity_GetNumCharacters() > 5" actionEnter "if RgInvPartyModeHover == 1 then Infinity_PressKeyboardButton('6') end" 			highlight selected 1}
+
+	slot {name "slot_inv_68"	area 588 614 40 40	bam "IVSLOT"	sequence 4	slotinfo "characters[id].equipment.ground0"			highlight selected 1}
+	slot {name "slot_inv_69"	area 628 614 40 40	bam "IVSLOT"	sequence 5	slotinfo "characters[id].equipment.ground1"			highlight selected 1}
+	slot {name "slot_inv_70"	area 668 614 40 40	bam "IVSLOT"	sequence 6	slotinfo "characters[id].equipment.ground2"			highlight selected 1}
+	slot {name "slot_inv_71"	area 708 614 40 40	bam "IVSLOT"	sequence 7	slotinfo "characters[id].equipment.ground3"			highlight selected 1}
+	slot {name "slot_inv_72"	area 748 614 40 40	bam "IVSLOT"	sequence 8	slotinfo "characters[id].equipment.ground4"			highlight selected 1}
+	slot {name "slot_inv_73"	area 788 614 40 40	bam "IVSLOT"	sequence 9	slotinfo "characters[id].equipment.ground5"			highlight selected 1}
+	slot {name "slot_inv_74"	area 828 614 40 40	bam "IVSLOT"	sequence 0	slotinfo "characters[id].equipment.ground6"			highlight selected 1}
+	slot {name "slot_inv_75"	area 868 614 40 40	bam "IVSLOT"	sequence 1	slotinfo "characters[id].equipment.ground7"			highlight selected 1}
+	slot {name "slot_inv_76"	area 908 614 40 40	bam "IVSLOT"	sequence 2	slotinfo "characters[id].equipment.ground8"			highlight selected 1}
+	slot {name "slot_inv_77"	area 948 614 40 40	bam "IVSLOT"	sequence 3	slotinfo "characters[id].equipment.ground9"			highlight selected 1}
+
+	button
+	{
+		area 491 621 22 42
+		mosaic icpickup
+		sequence 5
+	}
+
+	label
+	{
+		area 512 618 48 16
+		text lua "Infinity_GetCurrentGroundPage()+1 .. '/' .. Infinity_GetMaxGroundPage()+1"
+		text style "label"
+		align center center
+	}
+	button
+	{
+		area 512 630 24 24
+		bam "ARROBUTT"
+		sequence 0
+		action
+		"
+			Infinity_OnGroundPage(-1)
+		"
+	}
+	button
+	{
+		area 536 630 24 24
+		bam "ARROBUTT"
+		sequence 1
+		action
+		"
+			Infinity_OnGroundPage(1)
+		"
+	}
+
+	button
+	{
+		area 1032 30 48 48
+		bam "XBUTT"
+		action
+		"
+			e:GetActiveEngine():SelectEngine(worldScreen)
+		"
+	}
+	button
+	{
+		area 12 30 84 30
+		bam "jrnbutt"
+		sequence 1
+		text "MAP_TOOLTIP"
+		text style "button"
+		pad 16 16 16 16
+		action
+		"
+			e:GetActiveEngine():OnLeftPanelButtonClick(1)
+		"
+	}
+}
+
+menu
+{
+	name 'BACKGROUND_INVENTORY'
+	align center center
+	label
+	{
+		area 0 0 1366 768
+		mosaic "INVBG"
+	}
+}
+menu
+{
+	name 'BACKGROUND_INVENTORY_SHARED'
+	align center center
+	label
+	{
+		area 0 0 1366 768
+		mosaic "g-btshd"
+	}
+}
+
+menu
+{
+	name 'JOURNAL_NEW'
+	align center center
+	ignoreEsc
+	size 1024 768
+	onOpen
+	" 	
+		popSidebars()
+		Infinity_SetBackground('BACKGROUND_JOURNAL_NEW')
+		Infinity_PopMenu('JOURNAL_NEW_ORIGINAL')
+		
+	"
+	onClose
+	"
+		pushSidebars()
+	"
+	label
+	{
+		area 128 138 750 499
+		mosaic "g-btque"
+	}
+	list
+	{
+		column { 
+			width 100
+			label
+			{	
+			enabled "questEnabled(rowNumber)"
+				area 0 0 -1 -1
+				text lua "getQuestText(rowNumber)"
+				text style "jshared"
+				text color lua "getQuestColor2(rowNumber)"
+				align left center
+				text highlight 1
+				indent 1
+				pad 0 0 0 0
+			}
+		}
+		enabled "const.JOURNAL_MODE_QUESTS"
+		rowheight	dynamic
+		table		"quests"
+		var			selectedQuest
+		scrollbar	'g-btsl1'
+		area		158 224 329 332
+		hidehighlight
+		highlight color "Y"
+		focus color "Y"
+
+		action
+		"
+			setQuestViewed(selectedQuest)
+		"
+	}
+	button
+	{
+		area 154 578 95 34		
+		bam	"g-btcza"
+		sequence 0
+		enabled "const.JOURNAL_MODE_QUESTS"
+		text "BUTTON_ASSIGNED"
+		text style "buttonczacha"
+		glow lua "currentQuestType == const.ENTRY_TYPE_INPROGRESS"
+		action
+		"
+			currentQuestType = const.ENTRY_TYPE_INPROGRESS
+			selectedQuest = nil
+		"
+	}
+	button
+	{
+		area 384 578 95 34		
+		bam	"g-btcza"
+		sequence 1
+		enabled "const.JOURNAL_MODE_QUESTS"
+		text "BUTTON_COMPLETED"
+		text style "buttonczacha"
+		glow lua "currentQuestType == const.ENTRY_TYPE_COMPLETE"
+		action
+		"
+			currentQuestType = const.ENTRY_TYPE_COMPLETE
+			selectedQuest = nil
+		"
+	}
+	text
+	{
+		enabled "const.JOURNAL_MODE_QUESTS and quests[selectedQuest] ~= nil"
+		area 530 201 302 404
+		text style "jshared"
+		text lua "getEntryText(selectedQuest)"
+		text color lua "getBLACKCOLOR(rowNumber)"
+	}
+	label
+	{
+		enabled "searchBoxEnabled()"
+		area 222 560 185 14
+		text "ENTER_SEARCH_TERM_NORMAL"
+		text style "label"
+		text font "exocet"
+		text color lua "getBLACKCOLOR(rowNumber)"
+	}
+	label
+	{
+		enabled "searchBoxEnabled()"
+		area 258 590 114 15
+		fill 0 0 0 200
+		
+	}
+	edit
+	{
+		enabled "searchBoxEnabled()"
+		area 258 590 114 15
+		var journalSearchString
+		text style "edit"
+		maxlines 1
+		action
+		"
+			selectedQuest = nil
+			journalCheckScroll = 1
+			return 1 --need to return 1 since this action is technically a filter.
+		"
+	}
+	label
+	{	
+		area 258 172 232 36
+		text lua "Infinity_FetchString(69053)"
+		text style "label"
+		text font "exocet"
+		text color lua "getBLACKCOLOR(rowNumber)"
+	}
+	button
+	{
+		area 172 62 94 120
+		bam "g-btzak"
+		sequence 0
+		tooltip lua "Quests"
+		action 
+		"
+			
+			Infinity_PushMenu('JOURNAL_NEW')
+			Infinity_PopMenu('JOURNAL_NEW_BESTIARY')
+			
+		"
+	}
+	button
+	{
+		area 548 74 72 103
+		bam "g-btzak"
+		sequence 2
+		tooltip lua "Time"
+		action 
+		"
+			
+			Infinity_PushMenu('JOURNAL_NEW_MODE')
+			Infinity_PopMenu('JOURNAL_NEW_BESTIARY')
+			
+		"
+	}
+	button
+	{
+		area 376 69 82 108
+		bam "g-btzak"
+		sequence 1
+		tooltip lua "Bestiary"
+		action 
+		"
+			Infinity_PushMenu('JOURNAL_NEW_BESTIARY')
+			
+		"
+	}
+	button
+	{
+		area 1034 18 84 32
+		text "JOURNAL_BUTTON"
+		text style "button"
+		tooltip "JOURNAL_TOOLTIP"
+		bam "jrnbutt"
+		sequence 5
+		action 
+		"
+			Infinity_PushMenu('JOURNAL_NEW_ORIGINAL')
+	
+			
+		"
+	}
+	button
+	{
+		area 974 12 50 50
+		bam "XBUTT"
+		action
+		"
+			e:GetActiveEngine():OnLeftPanelButtonClick(2)
+		"
+	}
+}
+menu
+{
+	name 'JOURNAL_NEW_MODE'
+	align center center
+	ignoreEsc
+	size 1024 768
+	
+	onOpen 
+	"
+		popSidebars()
+		
+	journalScrollToBottom = 1
+	"
+	onClose 
+	"	
+		pushSidebars()
+	"
+	label
+	{
+		area 128 138 750 499
+		mosaic "g-btpos"
+	}
+	label
+	{
+		enabled "const.JOURNAL_MODE_JOURNAL"
+		area 176 602 284 15
+		fill 0 0 0 200
+		
+	}
+	label
+	{
+		enabled "searchBoxEnabled()"
+		area 224 586 185 16
+		text "ENTER_SEARCH_TERM_NORMAL"
+		text style "label"
+		text font "exocet"
+		text color lua "getBLACKCOLOR(rowNumber)"
+	}
+	edit
+	{
+		enabled "const.JOURNAL_MODE_JOURNAL"
+		area 176 602 284 15
+		var journalSearchString
+		text style "edit"
+		maxlines 1
+		action
+		"
+			selectedQuest = nil
+			journalCheckScroll = 1
+			return 1 --need to return 1 since this action is technically a filter.
+		"
+	}
+	list --journal3
+	{
+		column
+		{
+			width 100
+			label
+			{
+				enabled "getJournalEntryEnabled(rowNumber)"
+				area 0 0 -1 -1
+				pad 8 16 16 16
+				text lua "getJournalEntryText(rowNumber)"
+				text style "jshared"
+				text color lua "getBLACKCOLOR(rowNumber)"
+				text highlight 1
+			}
+		}
+		enabled "const.JOURNAL_MODE_JOURNAL"
+		rowheight	dynamic
+		hidehighlight
+		scrollbar func "journalScroll"
+		
+
+		table		"journalDisplay"
+		var			selectedJournal
+		scrollbar	'g-btsl1'
+		area		150 188 346 402
+	}
+}
+menu
+{
+	name 'JOURNAL_NEW_BESTIARY'
+	align center center
+	ignoreEsc
+	size 1024 768
+	
+	onOpen
+	"
+	popSidebars()
+		
+	journalScrollToBottom = 1
+	selectedBestiaryCreature = nil
+	checkForKnownBestiaryNPC()
+	showButton = false
+	"
+	
+	label
+	{
+		area -14 138 893 499
+		mosaic 'g-btbs2'
+	}
+	list
+	{
+		column
+		{
+			width 100
+			label
+			{
+				area 0 0 -1 -1
+				enabled "getBestiaryEnabled(rowNumber)"
+				text lua "Infinity_FetchString(bestiary[rowNumber].name)"
+				text style "normal_parchment"
+				text color lua "getBLACKCOLOR(rowNumber)"
+				text highlight 1
+			}
+		}
+		enabled "const.JOURNAL_MODE_BESTIARY"
+		rowheight dynamic
+		area 14 186 114 433
+		table "bestiary"
+		var	selectedBestiaryCreature
+		scrollbar 'g-btsl1'
+		hidehighlight
+		highlight color 255 255 255 255
+		focus color 255 255 255 255
+
+	}
+	
+	label
+	{
+		area 186 194 255 400
+		enabled "const.JOURNAL_MODE_BESTIARY"
+		bam lua "getBestiaryImage2()"
+	}
+	text
+	{
+		area 532 190 304 380
+		enabled "const.JOURNAL_MODE_BESTIARY"
+		text lua "getBestiaryDesc()"
+		text style "jshared"
+		text color lua "getBLACKCOLOR(rowNumber)"
+		scrollbar	'g-btsl1'
+	}
+	button
+	{
+		area 716 570 88 49
+		enabled "const.JOURNAL_MODE_BESTIARY"
+		text "BUTTON_NPC"
+		text style "button"
+		bam "g-btbn"
+		sequence 1
+		action
+		"
+			currentBestiaryClass = const.BESTIARY_CLASS_NPC
+			selectedBestiaryCreature = nil
+		"
+	}
+	button
+	{
+		area 566 570 87 49
+		enabled "const.JOURNAL_MODE_BESTIARY"
+		text "BUTTON_PC"
+		text style "button"
+		bam "g-btbn"
+		sequence 2
+		action
+		"
+			currentBestiaryClass = const.BESTIARY_CLASS_PC
+			selectedBestiaryCreature = nil
+		"
+	}
+}
+menu
+{ 
+	name 'JOURNAL_NEW_ORIGINAL'
+	align center center
+	ignoreEsc
+	size 1024 768
+	onopen "
+		buildJournalDisplay()
+		chapter = 0
+		selectedBestiaryCreature = nil
+		Infinity_SetBackground('BACKGROUND_JOURNAL')
+		popSidebars()
+		selectedQuest = nil
+		journalScrollToBottom = 1
+		checkForKnownBestiaryNPC()
+		Infinity_PopMenu('JOURNAL_NEW')
+		Infinity_PopMenu('JOURNAL_NEW_MODE')
+		Infinity_PopMenu('JOURNAL_NEW_BESTIARY')
+		popSidebars()
+		"
+	onclose
+	"	
+		Infinity_SetBackground('BACKGROUND_JOURNAL_NEW')
+		
+		
+	"
+	button
+	{
+		area 680 21 103 63
+		text "JOURNAL_BUTTON"
+		text style "button"
+		action "journalMode = const.JOURNAL_MODE_JOURNAL"
+		glow lua "journalMode == const.JOURNAL_MODE_JOURNAL"
+		bam "jrnbutt"
+	}
+	button
+	{
+		area 565 22 103 63
+		text "QUESTS_BUTTON"
+		text style "button"
+		action "journalMode = const.JOURNAL_MODE_QUESTS"
+		glow lua "journalMode == const.JOURNAL_MODE_QUESTS"
+		bam "jrnbutt"
+	}
+	button
+	{
+		area 796 21 103 63
+		text "BESTIARY_BUTTON"
+		text style "button"
+		action "journalMode = const.JOURNAL_MODE_BESTIARY"
+		glow lua "journalMode == const.JOURNAL_MODE_BESTIARY"
+		bam "jrnbutt"
+	}
+	button
+	{
+		area 974 12 50 50
+		bam "XBUTT"
+		action
+		"
+			e:GetActiveEngine():OnLeftPanelButtonClick(2)
+		"
+	}
+	button
+	{
+		area 820 568 163 163
+		text "DONE_BUTTON"
+		text style "button"
+		bam "jrndone"
+		on escape
+		action 
+		"
+			e:GetActiveEngine():OnLeftPanelButtonClick(2)
+		"
+	}
+	button
+	{
+		area 1042 12 84 32
+		text "JOURNAL_BUTTON"
+		text style "button"
+		tooltip "JOURNAL_TOOLTIP"
+		bam "jrnbutt"
+		sequence 5
+		action 
+		"
+			Infinity_PushMenu('JOURNAL_NEW')
+		"
+	}
+	label
+	{
+		enabled "searchBoxEnabled()"
+		area 107 629 316 18
+		text "ENTER_SEARCH_TERM_NORMAL"
+		text style "label"
+	}
+	label
+	{
+		enabled "searchBoxEnabled()"
+		area 107 659 316 25
+		fill 0 0 0 200
+		
+	}
+	edit
+	{
+		enabled "searchBoxEnabled()"
+		area 110 662 309 18
+		var journalSearchString
+		text style "edit"
+		maxlines 1
+		action
+		"
+			selectedQuest = nil
+			journalCheckScroll = 1
+			return 1 --need to return 1 since this action is technically a filter.
+		"
+	}
+	list
+	{
+		column { 
+			width 100
+			label
+			{	
+				enabled "questEnabled(rowNumber)"
+				area 8 0 -1 -1
+				text lua "getQuestText(rowNumber)"
+				text style "label"
+				text color lua "getQuestColor(rowNumber)"
+				align left center
+				text highlight 1
+				indent 1
+				pad 0 0 32 0
+			}
+		}
+		enabled "journalMode == const.JOURNAL_MODE_QUESTS"
+		rowheight	dynamic
+		table		"quests"
+		var			selectedQuest
+		scrollbar	'cgscrl1'
+		area		84 54 411 504
+		hidehighlight
+		highlight color "Y"
+		focus color "Y"
+
+		action
+		"
+			setQuestViewed(selectedQuest)
+		"
+		
+	}
+	button
+	{
+		area 527 526 138 56		
+		bam	NORMBUTT
+		enabled "journalMode == const.JOURNAL_MODE_QUESTS"
+		text "BUTTON_ASSIGNED"
+		text style "button"
+		glow lua "currentQuestType == const.ENTRY_TYPE_INPROGRESS"
+		action
+		"
+			currentQuestType = const.ENTRY_TYPE_INPROGRESS
+			selectedQuest = nil
+		"
+	}
+	button
+	{
+		area 683 526 138 56		
+		bam	NORMBUTT
+		enabled "journalMode == const.JOURNAL_MODE_QUESTS"
+		text "BUTTON_COMPLETED"
+		text style "button"
+		glow lua "currentQuestType == const.ENTRY_TYPE_COMPLETE"
+		action
+		"
+			currentQuestType = const.ENTRY_TYPE_COMPLETE
+			selectedQuest = nil
+		"
+	}
+	text
+	{
+		enabled "journalMode == const.JOURNAL_MODE_QUESTS and quests[selectedQuest] ~= nil"
+		area 536 108 406 366
+		text style "white_parchment"
+		text lua "getEntryText(selectedQuest)"
+	}
+	
+	list --journal
+	{
+		column
+		{
+			width 100
+			label
+			{
+				enabled "getJournalEntryEnabled(rowNumber)"
+				area 0 0 -1 -1
+				pad 8 16 16 16
+				text lua "getJournalEntryText(rowNumber)"
+				text style "normal"
+				text color 'B'
+				text highlight 1
+			}
+		}
+		enabled "journalMode == const.JOURNAL_MODE_JOURNAL"
+		seperator "getJournalEntryEnabled(rowNumber)"
+		rowheight	dynamic
+		hidehighlight
+		scrollbar func "journalScroll"
+
+		table		"journalDisplay"
+		var			selectedJournal
+		scrollbar	'cgscrl1'
+		area		78 54 417 504
+	}
+	label
+	{
+		enabled "journalMode == const.JOURNAL_MODE_JOURNAL"
+		area 588 126 299 328
+		mosaic "JRNLOP"
+	}
+	list
+	{
+		column
+		{
+			width 100
+			label
+			{
+				area 0 0 -1 -1
+				enabled "getBestiaryEnabled(rowNumber)"
+				text lua "Infinity_FetchString(bestiary[rowNumber].name)"
+				text style "label_parchment"
+				text highlight 1
+			}
+		}
+		enabled "journalMode == const.JOURNAL_MODE_BESTIARY"
+		rowheight dynamic
+		area 522 97 430 188
+		table "bestiary"
+		var	selectedBestiaryCreature
+		scrollbar 'cgscrl1'
+		hidehighlight
+		highlight color 255 255 255 255
+		focus color 255 255 255 255
+
+	}
+
+	label
+	{
+		area 107 79 316 492
+		enabled "journalMode == const.JOURNAL_MODE_BESTIARY"
+		mosaic lua "getBestiaryImage()"
+		align center center
+	}
+	text
+	{
+		area 532 306 420 174
+		enabled "journalMode == const.JOURNAL_MODE_BESTIARY"
+		text lua "getBestiaryDesc()"
+		text style "normal_parchment"
+		scrollbar	'cgscrl1'
+	}
+	button
+	{
+		area 683 526 103 63
+		enabled "journalMode == const.JOURNAL_MODE_BESTIARY"
+		glow lua "currentBestiaryClass == const.BESTIARY_CLASS_NPC"
+		text "BUTTON_NPC"
+		text style "button"
+		bam "jrnbutt"
+		action
+		"
+			currentBestiaryClass = const.BESTIARY_CLASS_NPC
+			selectedBestiaryCreature = nil
+		"
+	}
+	button
+	{
+		area 562 526 103 63
+		enabled "journalMode == const.JOURNAL_MODE_BESTIARY"
+		glow lua "currentBestiaryClass == const.BESTIARY_CLASS_PC"
+		text "BUTTON_PC"
+		text style "button"
+		bam "jrnbutt"
+		action
+		"
+			currentBestiaryClass = const.BESTIARY_CLASS_PC
+			selectedBestiaryCreature = nil
+		"
+	}
+}~~~~~
+
+//===========================\\
+// 06. Journal & backgrounds \\
+//===========================\\
+
+	REPLACE_TEXTUALLY ~function journalBackground()[%TAB%%LNL%%MNL%%WNL%]+if(journalMode == const\.JOURNAL_MODE_BESTIARY) then+[%TAB%%LNL%%MNL%%WNL%]+return "BEASTBG"[%TAB%%LNL%%MNL%%WNL%]+else[%TAB%%LNL%%MNL%%WNL%]+return "JRNBG"[%TAB%%LNL%%MNL%%WNL%]+end[%TAB%%LNL%%MNL%%WNL%]+end[%TAB%%LNL%%MNL%%WNL%]+`~
+
+	~function journalBackground()
+		if(journalMode == const.JOURNAL_MODE_BESTIARY) then
+			return "BEASTBG"
+		else
+			return "JRNBG"
+		end
+	end
+`
+--szef_06 (Journal & backgrounds)
+
+menu
+{
+	name 'BACKGROUND_JOURNAL'
+	align center center
+	label
+	{
+		area 0 0 1366 768
+		mosaic lua "journalBackground()"
+	}
+}
+menu 
+{
+	name 'BACKGROUND_JOURNAL_NEW'
+	align center center
+	label
+	{
+		area 0 0 1366 768
+		mosaic "g-btlaw"
+	}
+}~
+
+REPLACE_TEXTUALLY ~name 'JOURNAL'~ ~name 'dummy_03'~
+
+REPLACE_TEXTUALLY ~~~~~currentQuestType = const.ENTRY_TYPE_INPROGRESS[%TAB%%LNL%%MNL%%WNL%]+currentBestiaryClass = const.BESTIARY_CLASS_PC+[%TAB%%LNL%%MNL%%WNL%]+journalMode = const.JOURNAL_MODE_QUESTS+[%TAB%%LNL%%MNL%%WNL%]+journalSearchString = ""+[%TAB%%LNL%%MNL%%WNL%]+`~~~~~
+
+~~~~~
+currentQuestType = const.ENTRY_TYPE_INPROGRESS
+currentBestiaryClass = const.BESTIARY_CLASS_PC
+journalMode = const.JOURNAL_MODE_QUESTS
+journalSearchString = ""
+
+`
+menu
+{
+	name 'JOURNAL'
+	align center center
+	ignoreEsc
+	size 1024 768
+	onopen "
+		
+		if SkinsOptionsSliders[3][6] == 0 then
+		Infinity_PushMenu('JOURNAL_ORIGINAL')
+		else
+		Infinity_PushMenu('JOURNAL_NEW')
+		end
+	"
+	onclose
+	"	
+		Infinity_PopMenu('JOURNAL_ORIGINAL')
+		Infinity_PopMenu('JOURNAL_NEW_ORIGINAL')
+		Infinity_PopMenu('JOURNAL_NEW')
+		Infinity_PopMenu('JOURNAL_NEW_MODE')
+		Infinity_PopMenu('JOURNAL_NEW_BESTIARY')
+		
+		Infinity_SetBackground(nil)
+		pushSidebars()
+	"
+	button
+	{
+	area 0 0 0 0
+	}
+}
+menu
+{	
+	name 'JOURNAL_ORIGINAL'
+	align center center
+	ignoreEsc
+	size 1024 768
+	onopen "
+		buildJournalDisplay()
+		chapter = 0
+		selectedBestiaryCreature = nil
+		Infinity_SetBackground('BACKGROUND_JOURNAL')
+		popSidebars()
+		selectedQuest = nil
+		journalScrollToBottom = 1
+		
+		checkForKnownBestiaryNPC()
+		"
+	onclose
+	"	
+		Infinity_SetBackground(nil)
+		pushSidebars()
+	"
+	button
+	{
+		area 680 21 103 63
+		text "JOURNAL_BUTTON"
+		text style "button"
+		action "journalMode = const.JOURNAL_MODE_JOURNAL"
+		glow lua "journalMode == const.JOURNAL_MODE_JOURNAL"
+		bam "jrnbutt"
+	}
+	button
+	{
+		area 565 22 103 63
+		text "QUESTS_BUTTON"
+		text style "button"
+		action "journalMode = const.JOURNAL_MODE_QUESTS"
+		glow lua "journalMode == const.JOURNAL_MODE_QUESTS"
+		bam "jrnbutt"
+	}
+	button
+	{
+		area 796 21 103 63
+		text "BESTIARY_BUTTON"
+		text style "button"
+		action "journalMode = const.JOURNAL_MODE_BESTIARY"
+		glow lua "journalMode == const.JOURNAL_MODE_BESTIARY"
+		bam "jrnbutt"
+	}
+	button
+	{
+		area 974 12 50 50
+		bam "XBUTT"
+		action
+		"
+			e:GetActiveEngine():OnLeftPanelButtonClick(2)
+		"
+	}
+	button
+	{
+		area 820 568 163 163
+		text "DONE_BUTTON"
+		text style "button"
+		bam "jrndone"
+		on escape
+		action 
+		"
+			e:GetActiveEngine():OnLeftPanelButtonClick(2)
+		"
+	}
+	label
+	{
+		enabled "searchBoxEnabled()"
+		area 107 629 316 18
+		text "ENTER_SEARCH_TERM_NORMAL"
+		text style "label"
+	}
+	label
+	{
+		enabled "searchBoxEnabled()"
+		area 107 659 316 25
+		fill 0 0 0 200
+		
+	}
+	edit
+	{
+		enabled "searchBoxEnabled()"
+		area 110 662 309 18
+		var journalSearchString
+		text style "edit"
+		maxlines 1
+		action
+		"
+			selectedQuest = nil
+			journalCheckScroll = 1
+			return 1 --need to return 1 since this action is technically a filter.
+		"
+	}
+	list
+	{
+		column { 
+			width 100
+			label
+			{	
+				enabled "questEnabled(rowNumber)"
+				area 8 0 -1 -1
+				text lua "getQuestText(rowNumber)"
+				text style "label"
+				text color lua "getQuestColor(rowNumber)"
+				align left center
+				text highlight 1
+				indent 1
+				pad 0 0 32 0
+			}
+		}
+		enabled "journalMode == const.JOURNAL_MODE_QUESTS"
+		rowheight	dynamic
+		table		"quests"
+		var			selectedQuest
+		scrollbar	'cgscrl1'
+		area		84 54 411 504
+		hidehighlight
+		highlight color "Y"
+		focus color "Y"
+
+		action
+		"
+			setQuestViewed(selectedQuest)
+		"
+		
+	}
+	button
+	{
+		area 527 526 138 56		
+		bam	NORMBUTT
+		enabled "journalMode == const.JOURNAL_MODE_QUESTS"
+		text "BUTTON_ASSIGNED"
+		text style "button"
+		glow lua "currentQuestType == const.ENTRY_TYPE_INPROGRESS"
+		action
+		"
+			currentQuestType = const.ENTRY_TYPE_INPROGRESS
+			selectedQuest = nil
+		"
+	}
+	button
+	{
+		area 683 526 138 56		
+		bam	NORMBUTT
+		enabled "journalMode == const.JOURNAL_MODE_QUESTS"
+		text "BUTTON_COMPLETED"
+		text style "button"
+		glow lua "currentQuestType == const.ENTRY_TYPE_COMPLETE"
+		action
+		"
+			currentQuestType = const.ENTRY_TYPE_COMPLETE
+			selectedQuest = nil
+		"
+	}
+	text
+	{
+		enabled "journalMode == const.JOURNAL_MODE_QUESTS and quests[selectedQuest] ~= nil"
+		area 536 108 406 366
+		text style "white_parchment"
+		text lua "getEntryText(selectedQuest)"
+	}
+	
+	list --journal
+	{
+		column
+		{
+			width 100
+			label
+			{
+				enabled "getJournalEntryEnabled(rowNumber)"
+				area 0 0 -1 -1
+				pad 8 16 16 16
+				text lua "getJournalEntryText(rowNumber)"
+				text style "normal"
+				text color 'B'
+				text highlight 1
+			}
+		}
+		enabled "journalMode == const.JOURNAL_MODE_JOURNAL"
+		seperator "getJournalEntryEnabled(rowNumber)"
+		rowheight	dynamic
+		hidehighlight
+		scrollbar func "journalScroll"
+
+		table		"journalDisplay"
+		var			selectedJournal
+		scrollbar	'cgscrl1'
+		area		78 54 417 504
+	}
+	label
+	{
+		enabled "journalMode == const.JOURNAL_MODE_JOURNAL"
+		area 588 126 299 328
+		mosaic "JRNLOP"
+	}
+	list
+	{
+		column
+		{
+			width 100
+			label
+			{
+				area 0 0 -1 -1
+				enabled "getBestiaryEnabled(rowNumber)"
+				text lua "Infinity_FetchString(bestiary[rowNumber].name)"
+				text style "label_parchment"
+				text highlight 1
+			}
+		}
+		enabled "journalMode == const.JOURNAL_MODE_BESTIARY"
+		rowheight dynamic
+		area 522 97 430 188
+		table "bestiary"
+		var	selectedBestiaryCreature
+		scrollbar 'cgscrl1'
+		hidehighlight
+		highlight color 255 255 255 255
+		focus color 255 255 255 255
+
+	}
+
+	label
+	{
+		area 107 79 316 492
+		enabled "journalMode == const.JOURNAL_MODE_BESTIARY"
+		mosaic lua "getBestiaryImage()"
+		align center center
+	}
+	text
+	{
+		area 532 306 420 174
+		enabled "journalMode == const.JOURNAL_MODE_BESTIARY"
+		text lua "getBestiaryDesc()"
+		text style "normal_parchment"
+		scrollbar	'cgscrl1'
+	}
+	button
+	{
+		area 683 526 103 63
+		enabled "journalMode == const.JOURNAL_MODE_BESTIARY"
+		glow lua "currentBestiaryClass == const.BESTIARY_CLASS_NPC"
+		text "BUTTON_NPC"
+		text style "button"
+		bam "jrnbutt"
+		action
+		"
+			currentBestiaryClass = const.BESTIARY_CLASS_NPC
+			selectedBestiaryCreature = nil
+		"
+	}
+	button
+	{
+		area 562 526 103 63
+		enabled "journalMode == const.JOURNAL_MODE_BESTIARY"
+		glow lua "currentBestiaryClass == const.BESTIARY_CLASS_PC"
+		text "BUTTON_PC"
+		text style "button"
+		bam "jrnbutt"
+		action
+		"
+			currentBestiaryClass = const.BESTIARY_CLASS_PC
+			selectedBestiaryCreature = nil
+		"
+	}
+}~~~~~
+
+//=========================\\
+// 07. Dialogs backgrounds \\
+//=========================\\
+
+	REPLACE_TEXTUALLY ~label[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+area 0 0 1366 768[%TAB%%LNL%%MNL%%WNL%]+mosaic 'MAPBG'[%TAB%%LNL%%MNL%%WNL%]+}[%TAB%%LNL%%MNL%%WNL%]+}~
+	
+	~label
+	{
+		area 0 0 1366 768
+		mosaic 'MAPBG'
+	}
+}
+
+--szef_07 (Dialogs backgrounds)
+
+menu
+{
+	name 'BACKGROUND_DIALOG'
+	offset 0 0
+	align center bottom
+	exclusiveFocus
+	ignoreEsc
+	size 1366 298
+	
+	label
+	{
+		area 988 26 1497 297
+		mosaic "convwing"
+	}
+	label
+	{
+		area -1050 26 1497 297
+		mosaic "convwing"
+	}
+	label
+	{
+		name "worldDialogBackground"
+		area 0 0 1366 298
+		mosaic "DIABG"
+	}
+	button
+	{
+		area 612 245 136 43
+		bam		widebutt
+		text lua "getDialogButtonText()"
+		enabled "getDialogButtonEnabled()"
+		clickable lua "getDialogButtonClickable()"		
+		text style "button"
+		text point 16
+		action 
+		"
+			onDialogButtonClick()
+		"
+	}
+	button
+	{
+		area 0 0 0 0
+		enabled "getDialogButtonEnabled() and getDialogButtonClickable()"
+		on return
+		action
+		"
+			onDialogButtonClick()
+		"
+	}
+	button
+	{
+		area 0 0 0 0
+		enabled "getDialogButtonEnabled() and getDialogButtonClickable()"
+		on escape
+		action
+		"
+			onDialogButtonClick()
+		"
+	}
+	label
+	{
+		area 879 244 42 44
+		text lua "game:GetPartyGold()"
+		text style "gold"
+	}
+	label
+	{
+		area 923 244 54 44
+		mosaic icgoldf
+	}
+	
+	list
+	{
+		column
+		{
+			width 100
+			text
+			{
+				area 0 0 -1 -1
+				text lua "getDialogEntryText(rowNumber)"
+				text style "normal"
+				text highlight 1
+				indent 1
+			}
+		}
+		name "worldPlayerDialogChoicesList"
+		area 397 24 580 204
+		rowheight dynamic
+		table "dialogTable"
+		var "worldPlayerDialogSelection"
+		scrollbar	'CGSCRL1'
+		scrollbar func "chatboxScroll"
+		hideHighlight
+		scrollbar force 1
+		ignoreFocus 1
+
+		actionEnter
+		"
+			if(gameOptions.m_bConfirmDialog == true) then return end
+			if(not dialogTable[mouseoverRow] or not getDialogRowClickable(mouseoverRow)) then 
+				--non-interactive row.
+				glowTest = nil
+				worldPlayerDialogSelection = nil
+				return
+			end
+			glowTest = mouseoverRow
+			worldPlayerDialogSelection = mouseoverRow
+		"
+		actionExit
+		"	
+			if(gameOptions.m_bConfirmDialog == true) then return end
+			glowTest = nil
+			worldPlayerDialogSelection = 0
+		"
+		action
+		"
+			chatboxScrollToBottom = 0
+			--In confirm mode, just highlight the choice.
+			if(gameOptions.m_bConfirmDialog == true) then 
+				if (not getDialogRowClickable(worldPlayerDialogSelection)) then
+					--clear the selection
+					worldPlayerDialogSelection = 0
+				end
+				return 
+			end
+			if(not getDialogRowClickable(worldPlayerDialogSelection)) then return end
+			worldScreen:OnDialogReplyClick(dialogTable[worldPlayerDialogSelection].marker)
+			worldPlayerDialogSelection = 0
+		"
+		actiondbl
+		"
+			--consume the second click. we want to avoid double clicking accidently stopping the scroll.
+		"
+	}
+
+}
+menu 
+{
+	name 'PORTRAITS_BACKGROUND_DIALOG'
+	offset 0 0
+	align center bottom
+	exclusiveFocus
+	ignoreEsc
+	size 1366 298
+	
+	label
+	{
+		area 988 26 1497 297
+		mosaic "convwing"
+	}
+	label
+	{
+		area -1050 26 1497 297
+		mosaic "convwing"
+	}
+	label
+	{
+		name "worldDialogBackground"
+		area 0 0 1366 298
+		mosaic "DIABG"
+	}
+	button
+	{
+		area 612 245 136 43
+		bam		widebutt
+		text lua "getDialogButtonText()"
+		enabled "getDialogButtonEnabled()"
+		clickable lua "getDialogButtonClickable()"		
+		text style "button"
+		text point 16
+		action 
+		"
+			onDialogButtonClick()
+		"
+	}
+	button
+	{
+		area 0 0 0 0
+		enabled "getDialogButtonEnabled() and getDialogButtonClickable()"
+		on return
+		action
+		"
+			onDialogButtonClick()
+		"
+	}
+	button
+	{
+		area 0 0 0 0
+		enabled "getDialogButtonEnabled() and getDialogButtonClickable()"
+		on escape
+		action
+		"
+			onDialogButtonClick()
+		"
+	}
+	label
+	{
+		area 879 244 42 44
+		text lua "game:GetPartyGold()"
+		text style "gold"
+	}
+	label
+	{
+		area 923 244 54 44
+		mosaic icgoldf
+	}
+	
+	-- SMEAGOL	
+	label
+	{
+		area 217 28 158 246
+		mosaic default
+		align center bottom
+	}
+	label
+	{
+		name "worldDialogPortraitArea"
+		area 217 28 158 246
+		bitmap lua "worldNPCDialogPortrait"
+		align center bottom
+	}	
+	label
+	{
+		area 207 18 182 270
+		mosaic S9frame
+		align center top
+	}
+	-- SMEAGOL
+	
+	list
+	{
+		column
+		{
+			width 100
+			text
+			{
+				area 0 0 -1 -1
+				text lua "getDialogEntryText(rowNumber)"
+				text style "normal"
+				text highlight 1
+				indent 1
+			}
+		}
+		name "worldPlayerDialogChoicesList"
+		area 397 24 580 204
+		rowheight dynamic
+		table "dialogTable"
+		var "worldPlayerDialogSelection"
+		scrollbar	'CGSCRL1'
+		scrollbar func "chatboxScroll"
+		hideHighlight
+		scrollbar force 1
+		ignoreFocus 1
+
+		actionEnter
+		"
+			if(gameOptions.m_bConfirmDialog == true) then return end
+			if(not dialogTable[mouseoverRow] or not getDialogRowClickable(mouseoverRow)) then 
+				--non-interactive row.
+				glowTest = nil
+				worldPlayerDialogSelection = nil
+				return
+			end
+			glowTest = mouseoverRow
+			worldPlayerDialogSelection = mouseoverRow
+		"
+		actionExit
+		"	
+			if(gameOptions.m_bConfirmDialog == true) then return end
+			glowTest = nil
+			worldPlayerDialogSelection = 0
+		"
+		action
+		"
+			chatboxScrollToBottom = 0
+			--In confirm mode, just highlight the choice.
+			if(gameOptions.m_bConfirmDialog == true) then 
+				if (not getDialogRowClickable(worldPlayerDialogSelection)) then
+					--clear the selection
+					worldPlayerDialogSelection = 0
+				end
+				return 
+			end
+			if(not getDialogRowClickable(worldPlayerDialogSelection)) then return end
+			worldScreen:OnDialogReplyClick(dialogTable[worldPlayerDialogSelection].marker)
+			worldPlayerDialogSelection = 0
+		"
+		actiondbl
+		"
+			--consume the second click. we want to avoid double clicking accidently stopping the scroll.
+		"
+	}
+}
+menu
+{
+	name 'SDB_BACKGROUND_DIALOG'
+	offset 0 0
+	align center center
+	exclusiveFocus
+	ignoreEsc
+	size 1366 768
+	--SMEAGOL
+	label
+    {
+        area 769 150 122 190
+        mosaic default
+        align center bottom
+    }
+    label
+    {
+        name "worldDialogPortraitArea"
+        area 769 150 122 190
+        bitmap lua "worldNPCDialogPortrait"
+        align center bottom
+    }
+	--SMEAGOL
+	 label
+    {
+        name "worldDialogBackground"
+        area 745 0 570 762
+        mosaic "g-btsdb"
+    }
+	button
+	{
+		area 906 710 136 46
+		text lua "getDialogButtonText()"
+		enabled "getDialogButtonEnabled()"
+		clickable lua "getDialogButtonClickable()"		
+		text style "button"
+		text point 16
+		action 
+		"
+			onDialogButtonClick()
+		"
+	}
+	button
+	{
+		area 0 0 0 0
+		enabled "getDialogButtonEnabled() and getDialogButtonClickable()"
+		on return
+		action
+		"
+			onDialogButtonClick()
+		"
+	}
+	button
+	{
+		area 0 0 0 0
+		enabled "getDialogButtonEnabled() and getDialogButtonClickable()"
+		on escape
+		action
+		"
+			onDialogButtonClick()
+		"
+	}
+	label
+	{
+		align center center
+		area 125 620 80 80
+		mosaic "g-btmed"
+	}
+	label
+	{
+		area 100 650 133 133
+		text lua "game:GetPartyGold()"
+		text style	title
+		text font "exocet"
+	}
+	list
+	{
+		column
+		{
+			width 100
+			text
+			{
+				area 0 0 -1 -1
+				text lua "getDialogEntryText2(rowNumber)"
+				text style "normal2"
+				text highlight 1
+				indent 1
+			}
+		}
+		name "worldPlayerDialogChoicesList"
+		area 920 92 326 602
+		rowheight dynamic
+		table "dialogTable"
+		var "worldPlayerDialogSelection"
+		scrollbar	"g-btsl1"
+		scrollbar func "chatboxScroll2"
+		hideHighlight
+		scrollbar force 1
+		ignoreFocus 1
+	
+
+		actionEnter
+		"	
+			if(gameOptions.m_bConfirmDialog == true) then return end
+			if(not dialogTable[mouseoverRow] or not getDialogRowClickable(mouseoverRow)) then
+				--non-interactive row.
+				glowTest = nil
+				worldPlayerDialogSelection = nil
+				return
+			end
+			glowTest = mouseoverRow
+			worldPlayerDialogSelection = mouseoverRow
+			
+		"
+		actionExit
+		"	
+			if(gameOptions.m_bConfirmDialog == true) then return end
+			glowTest = nil
+			worldPlayerDialogSelection = 0
+		"
+		action --proba
+		"
+			chatboxScrollToBottom = 0
+			-- setDlgResponsesColor(worldPlayerDialogSelection)
+			--In confirm mode, just highlight the choice.
+			if(gameOptions.m_bConfirmDialog == true) then
+				if (not getDialogRowClickable) then
+					--clear the selection
+					worldPlayerDialogSelection = 0
+
+				end
+				return 
+			end
+			if(not getDialogRowClickable(worldPlayerDialogSelection)) then return end
+			worldScreen:OnDialogReplyClick(dialogTable[worldPlayerDialogSelection].marker)
+			worldPlayerDialogSelection = 0
+		"
+		actiondbl
+		"
+			--consume the second click. we want to avoid double clicking accidently stopping the scroll.
+		"
+	}
+}
+
+menu
+{
+	name 'TTON_BACKGROUND_DIALOG'
+	offset 0 0
+	align center bottom
+	exclusiveFocus
+	ignoreEsc
+	size 1366 768
+	--SMEAGOL
+	label
+    {
+        area 217 511 155 214
+        mosaic default
+        align center bottom
+    }
+    label
+    {
+        name "worldDialogPortraitArea"
+        area 217 532 155 214
+        bitmap lua "worldNPCDialogPortrait"
+        align center bottom
+    }
+	--SMEAGOL
+	 label
+    {
+        name "worldDialogBackground"
+        area 153 463 1060 305
+        mosaic "g-btton"
+    }
+	button
+	{
+		area 474 726 98 38
+		text lua "getDialogButtonText()"
+		enabled "getDialogButtonEnabled()"
+		clickable lua "getDialogButtonClickable()"
+		text style "button"
+		text point 15
+		bam "g-btbut"
+		action
+		"
+			onDialogButtonClick()
+		"
+	}
+	button
+	{
+		area 0 0 0 0
+		enabled "getDialogButtonEnabled() and getDialogButtonClickable()"
+		on return
+		action
+		"
+			onDialogButtonClick()
+		"
+	}
+	button
+	{
+		area 0 0 0 0
+		enabled "getDialogButtonEnabled() and getDialogButtonClickable()"
+		on escape
+	action
+		"
+			onDialogButtonClick()
+		"
+	}
+	label
+	{
+		area 252 717 78 25
+		text lua "game:GetPartyGold()"
+		text style	"gold"
+		text font "exocet"
+	}
+	list
+	{
+		column
+		{
+			width 100
+			text
+			{
+				area 0 0 -1 -1
+				text lua "getDialogEntryText3(rowNumber)"
+				text style "normal2"
+				text highlight 1
+				indent 1
+			}
+		}
+		name "worldPlayerDialogChoicesList"
+		area 460 500 712 217
+		rowheight dynamic
+		table "dialogTable"
+		var "worldPlayerDialogSelection"
+		scrollbar	"g-btsl1"
+		scrollbar func "chatboxScroll2"
+		hideHighlight
+		scrollbar force 1
+		ignoreFocus 1
+	
+
+		actionEnter
+		"
+			if(gameOptions.m_bConfirmDialog == true) then return end
+			if(not dialogTable[mouseoverRow] or not getDialogRowClickable(mouseoverRow)) then
+				--non-interactive row.
+				glowTest = nil
+				worldPlayerDialogSelection = nil
+				return
+			end
+			glowTest = mouseoverRow
+			worldPlayerDialogSelection = mouseoverRow
+		"
+		actionExit
+		"
+			if(gameOptions.m_bConfirmDialog == true) then return end
+			glowTest = nil
+			worldPlayerDialogSelection = 0
+		"
+		action
+		"
+			chatboxScrollToBottom = 0
+			 --In confirm mode, just highlight the choice.
+			if(gameOptions.m_bConfirmDialog == true) then
+				if (not getDialogRowClickable(worldPlayerDialogSelection)) then
+					--clear the selection
+					worldPlayerDialogSelection = 0
+				end
+				return
+			end
+			if(not getDialogRowClickable(worldPlayerDialogSelection)) then return end
+			worldScreen:OnDialogReplyClick(dialogTable[worldPlayerDialogSelection].marker)
+			worldPlayerDialogSelection = 0
+		"
+		actiondbl
+		"
+			consume the second click. we want to avoid double clicking accidently stopping the scroll.
+		"
+	}
+}~
+
+//==================\\
+// 08. Quest colors \\
+//==================\\
+
+	REPLACE_TEXTUALLY ~function getQuestColor(row)[%TAB%%LNL%%MNL%%WNL%]+local color = 0+[%TAB%%LNL%%MNL%%WNL%]+local viewed = getSaveOption("Viewed Quest", tostring(quests\[row\]\.text), 0)+[%TAB%%LNL%%MNL%%WNL%]+if(tonumber(viewed) == 1) then color = fontcolors\['B'\] else color = fontcolors\['P'\] end+[%TAB%%LNL%%MNL%%WNL%]+color = tonumber(color,16)return bit32.band(color,0x00FFFFFF)+[%TAB%%LNL%%MNL%%WNL%]+end~
+	
+	~function getQuestColor(row)
+	local color = 0
+	local viewed = getSaveOption("Viewed Quest", tostring(quests[row].text), 0)
+	if(tonumber(viewed) == 1) then color = fontcolors['B'] else color = fontcolors['P'] end
+	color = tonumber(color,16)return bit32.band(color,0x00FFFFFF)
+end
+
+--szef_08 (Quest colors)
+
+function getQuestColor2(row)
+	local color = 0
+	local viewed = getSaveOption("Viewed Quest", tostring(quests[row].text), 0)
+	if(tonumber(viewed) == 1) then color = fontcolors['Z'] else color = fontcolors['R'] end
+	color = tonumber(color,16)return bit32.band(color,0x00FFFFFF)
+end
+
+function getBLACKCOLOR(row)
+    local color = 0
+    local viewed = getSaveOption("Viewed Quest", tostring(quests[row].text), 0)
+    if(tonumber(viewed) == 1) then color = fontcolors['P'] else color = fontcolors['B'] end
+    color = tonumber(color,16)return bit32.band(color,0x00000000)
+end~
+
+//====================\\
+// 09. Bestiary2 func \\
+//====================\\
+
+REPLACE_TEXTUALLY ~function getBestiaryImage()[%TAB%%LNL%%MNL%%WNL%]+if(bestiary\[selectedBestiaryCreature\] and bestiary\[selectedBestiaryCreature\]\.imageKnown) then+[%TAB%%LNL%%MNL%%WNL%]+return bestiary\[selectedBestiaryCreature\]\.imageKnown+[%TAB%%LNL%%MNL%%WNL%]+else+[%TAB%%LNL%%MNL%%WNL%]+return "default" --bmp named "default"+[%TAB%%LNL%%MNL%%WNL%]+end+[%TAB%%LNL%%MNL%%WNL%]+end~
+
+~function getBestiaryImage()
+	if(bestiary[selectedBestiaryCreature] and bestiary[selectedBestiaryCreature].imageKnown) then
+		return bestiary[selectedBestiaryCreature].imageKnown
+	else
+		return "default" --bmp named "default"
+	end
+end
+
+--szef_09 (Bestiray 2 func)
+
+function getBestiaryImage2()
+	if(bestiary[selectedBestiaryCreature] and bestiary[selectedBestiaryCreature].imageKnown) then
+		return bestiary[selectedBestiaryCreature].imageKnown
+	else
+		return "default" --bmp named "default"
+	end
+end~
+
+//=====================\\
+// 10. Sliders strings \\
+//=====================\\
+
+REPLACE_TEXTUALLY ~`[%TAB%%LNL%%MNL%%WNL%]+menu[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+name "WELCOME_MENU"~ 
+
+~
+--szef_10 (Sliders strings)
+
+function GetdboxString()
+		if SkinsOptionsSliders[1][6] == 0 then
+		return t("ORIGINAL_DBOX")
+		elseif SkinsOptionsSliders[1][6] == 1 then
+		return t('JPC_DBOX')
+		elseif	SkinsOptionsSliders[1][6] == 2 then
+		return t('SDB_DBOX')
+		else
+		return t('TTON_DBOX')
+		end
+	end
+	
+	function GetdboxDescString()
+		if SkinsOptionsSliders[1][6] == 0 then
+		return t('DBOX_SKIN')
+		elseif SkinsOptionsSliders[1][6] == 1 then
+		return t('DBOX_SKIN')
+		elseif SkinsOptionsSliders[1][6] == 2 then
+		return t('DBOX_SKIN')
+		else
+		return t('DBOX_SKINn')
+		end
+	end
+
+	function GetdboxSliderString()
+		if SkinsOptionsSliders[1][6] == 0 then
+		return t('SLIDER_DBOX_STRING_0')
+		elseif SkinsOptionsSliders[1][6] == 1 then
+		return t('SLIDER_DBOX_STRING_1')
+		elseif SkinsOptionsSliders[1][6] == 2 then
+		return t('SLIDER_DBOX_STRING_2')
+		else
+		return t('SLIDER_DBOX_STRING_3')
+		end
+	end
+	
+	function GetInvString()
+		if SkinsOptionsSliders[2][6] == 0 then
+		return t('CLASSIC_INV')
+		elseif SkinsOptionsSliders[2][6] then
+		return t('SHARED_INV')
+		--else
+		--return t('This slider allows to change inventory skin, and slots arrangement.^N\n\nI n \tG a m e \tW o r l d \tS c r e e n \tI n v e n t o r y\n^-')
+		end
+	end
+
+	function GetInvDescString()
+		if SkinsOptionsSliders[2][6] == 0 then
+		return t('INV_SKIN')
+		else
+		return t('INV_SKIN')
+		--else
+		--return t('This slider allows to change inventory skin, and slots arrangement.\n')
+		end
+	end
+
+	function GetInvSliderString()
+		if SkinsOptionsSliders[2][6] == 0 then
+		return t('SLIDER_INV_STRING_0')
+		elseif SkinsOptionsSliders[2][6] then
+		return t('SLIDER_INV_STRING_1')
+		--else
+		--return t('^0xff78b570In World')
+		end
+	end
+	
+	
+	function GetJournalString()
+		if SkinsOptionsSliders[3][6] == 0 then
+		return t('DEFAULT_JOURNAL')
+		else
+		return t('NEW_JOURNAL')
+		end
+	end
+
+	function GetJournalDescString()
+		if SkinsOptionsSliders[3][6] == 0 then
+		return t('JOURNAL_SKIN')
+		else
+		return t('JOURNAL_SKIN')
+		end
+	end
+
+	function GetJournalSliderString()
+		if SkinsOptionsSliders[3][6] == 0 then
+		return t('SLIDER_JOURNAL_0')
+		else
+		return t('SLIDER_JOURNAL_1')
+		end
+	end
+	
+	function GetDboxImgString()
+	 if SkinsOptionsSliders[1][6] == 0 then
+      return "g-btcla"
+    elseif SkinsOptionsSliders[1][6] == 1 then
+      return "g-btpor"
+    elseif SkinsOptionsSliders[1][6] == 2 then
+      return "g-btsd1"
+    else
+      return "g-btttn"
+    end
+	end
+	
+	function GetInvImgString()
+	 if SkinsOptionsSliders[2][6] == 0 then
+      return "g-btdef"
+    elseif SkinsOptionsSliders[2][6] == 1 then
+      return "g-btsh1"
+    else
+      return "inv-iw"
+    end
+	end
+	
+	function GetJournalImgString()
+	if SkinsOptionsSliders[3][6] == 0 then
+      return "g-btjol"
+    else
+      return "g-btjnw"
+    end
+	end
+`
+menu
+{
+	name "WELCOME_MENU"~
+	
+//===========================\\ 
+// 11. Dialogentrytext 2 & 3 \\
+//===========================\\
+
+
+	REPLACE_TEXTUALLY ~function getDialogEntryText(row)[%TAB%%LNL%%MNL%%WNL%]+local text = dialogTable\[row\].text+[%TAB%%LNL%%MNL%%WNL%]+if (row == worldPlayerDialogSelection) then[%TAB%%LNL%%MNL%%WNL%]+--Color the text white when selected[%TAB%%LNL%%MNL%%WNL%]+text = string.gsub(text, "%\^0xff212eff", "\^0xFFFFFFFF")[%TAB%%LNL%%MNL%%WNL%]+end[%TAB%%LNL%%MNL%%WNL%]+return text[%TAB%%LNL%%MNL%%WNL%]+end~
+		
+	~~~~~--szef_11 (Dialogentrytext 2 & 3)
+	
+	function getDialogEntryText(row)
+		local text = dialogTable[row].text
+		if (row == worldPlayerDialogSelection) then
+			--Color the text white when selected
+			text = string.gsub(text, "%^0xff212eff", "^0xFFFFFFFF")
+		end
+		return text
+	end
+	
+	function djb2Hash(str)
+	-- 32 bit
+	local h = 5381
+	for i = 1, #str do
+	h = bit32.lshift(h, 5) + h + str:byte(i)
+	end
+	return h
+	end
+
+	function getDialogHashKey(str)
+	i, j = string.find(str, "%- ")
+	if i ~= nil then
+	str = string.sub(str, i+2, #str)
+	end
+	local text_key = tostring(lastNPCdialog) .. '#' .. tostring(str)
+	local key = '%%' .. tostring(djb2Hash(text_key))
+	return key, text_key
+	end
+	
+	function getDialogEntryText2(row)
+	local text = dialogTable[row].text
+	local dlgrc = 0
+	local key, text_key = getDialogHashKey(text)
+	if Infinity_GetINIValue('Graphics','Dlg Responses Color', 0) ~= 0 then
+	if Infinity_GetINIValue('Dlg Color String', key, 0) ~= 0 then
+	dlgrc = 1
+	end
+	end
+	if (not getDialogRowClickable(row)) then
+	--npc names
+	i, j = string.find(text, "^%^0xff75a1b8.-%^")
+	if i ~= nil then
+	lastNPCdialog = string.sub(text, i+11, j-1)
+	end
+	text = string.gsub(text, "%^0xff75a1b8", "^0xFF81c6d9")
+	end
+	if (not getDialogHistory) then
+	--TNO name
+	text = string.gsub(text, "%^0xffd5c885", "^0xFF4e5153")
+	end
+	if (not getDialogHistory) then
+	--TNO txt
+	text = string.gsub(text, "%^0xffd7c8a0", "^0xFF4e5153")
+	end
+	if (not getDialogResponses) then
+	--1. 2.
+	text = string.gsub(text, "%^0xffcec471", "^0xFF81c6d9")
+	end
+	if (not getDialogResponses) then
+	--responses list
+	text = string.gsub(text, "%^0xff212eff", "^0xFF1b20d8")
+	end
+	if (row == worldPlayerDialogSelection) then
+	--Color the text when selected
+	text = string.gsub(text, "%^0xFF1b20d8", "^0xffcecec7")
+	end
+	if((dlgrc) == 1) then
+	text = string.gsub(text, "%^0xFF1b20d8", "^0xff4044ac")
+	end
+	return text
+	end
+	
+	function setDlgResponsesColor(row)
+	Infinity_SetINIValue('Graphics', 'Dlg Responses Color',1)
+	local key, text_key = getDialogHashKey(dialogTable[row].text)
+	print("REC-DIALOG " .. key .. " " .. text_key)
+	Infinity_SetINIValue('Dlg Color String', key, 1)
+	return text
+	end
+	
+	function getDialogEntryText3(row)
+		local text = dialogTable[row].text
+		if (not getDialogRowClickable(row)) then
+			text = string.gsub(text, "%^0xff75a1b8", "^0xFF7d94c2")
+		end
+		if (not getDialogRowClickable(row)) then
+			--for dialogue lines
+			text = string.gsub(text, "%^0xff7da58c", "^0xFFa1a5a6")
+		end
+		if (not getDialogHistory) then
+			text = string.gsub(text, "%^0xffd5c885", "^0xFF4e5153")
+		end
+		if (not getDialogHistory) then
+			text = string.gsub(text, "%^0xffd7c8a0", "^0xFF4e5153")
+		end
+		if (not getDialogResponses) then
+			text = string.gsub(text, "%^0xffcec471", "^0xFF81c6d9")
+		end
+		if (not getDialogResponses) then
+			text = string.gsub(text, "%^0xff212eff", "^0xFF81c6d9")
+		end
+		if (row == worldPlayerDialogSelection) then
+			--Color the text when selected
+			text = string.gsub(text, "%^0xFF81c6d9", "^0xff212eff")
+		end
+		return text
+	end~~~~~
+	
+	
+	REPLACE_TEXTUALLY ~if(newTop \+ contentHeight < height) then[%TAB%%LNL%%MNL%%WNL%]+chatboxScrollToBottom = 0+[%TAB%%LNL%%MNL%%WNL%]+return height - contentHeight+[%TAB%%LNL%%MNL%%WNL%]+end+[%TAB%%LNL%%MNL%%WNL%]+return newTop+[%TAB%%LNL%%MNL%%WNL%]+end~
+	
+	~~~~~
+	if(newTop + contentHeight < height) then
+			chatboxScrollToBottom = 0
+			return height - contentHeight
+		end
+		return newTop
+	end
+	
+	function chatboxScroll2(top, height, contentHeight)
+		if(chatboxJumpToBottom and contentHeight > height) then
+			chatboxJumpToBottom = nil
+			return height-contentHeight
+		end
+		if(chatboxScrollToBottom == 0) then
+			--defer to default scrolling
+			return nil
+		end
+		if(contentHeight < height) then
+			--no scrolling required, content fits
+			chatboxScrollToBottom = nil
+			return nil
+		end
+		local dT = Infinity_GetClockTicks() - chatboxScrollTimeLast
+		chatboxScrollTimeLast = Infinity_GetClockTicks()
+		top = top + lastTrimmedContentHeight
+		lastTrimmedContentHeight = 0
+		local newTop = (dT * -100) + top
+		if (newTop + contentHeight > height + 200) then
+			return (height - contentHeight + 200)
+		end
+		if(newTop + contentHeight < height) then
+			chatboxScrollToBottom = 0
+			return height - contentHeight
+		end
+		return newTop
+	end~~~~~
+
+/*	
+//======================\\
+// 12. Load/Save panels \\	
+//======================\\
+
+	REPLACE_TEXTUALLY ~label[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+area 358 37 155 20+[%TAB%%LNL%%MNL%%WNL%]+text lua "gameSaves.files\[rowNumber\].time"~
+	
+	~--szef_12 (Load/Save panels)
+	label
+			{
+				area 600 43 155 20
+				text lua "gameSaves.files[rowNumber].time"~
+				
+				
+	REPLACE_TEXTUALLY ~label[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+area 525 37 263 20[%TAB%%LNL%%MNL%%WNL%]+text lua "gameSaves.files\[rowNumber\].areaName"~
+	
+	~label
+			{
+				area 600 67 263 20
+				text lua "gameSaves.files[rowNumber].areaName"~
+				
+				
+	REPLACE_TEXTUALLY ~label[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+area 345 66 27 27+[%TAB%%LNL%%MNL%%WNL%]+enabled		 "gameSaves.files\[rowNumber\].hasPortrait0"~
+	
+	~label
+			{
+				area 347 40 33 50
+				enabled		 "gameSaves.files[rowNumber].hasPortrait0"~
+				
+	REPLACE_TEXTUALLY ~label[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+area 373 66 27 27+[%TAB%%LNL%%MNL%%WNL%]+enabled		 "gameSaves.files\[rowNumber\].hasPortrait1"~
+	
+	~label
+			{
+				area 385 40 33 50
+				enabled		 "gameSaves.files[rowNumber].hasPortrait1"~
+	
+	REPLACE_TEXTUALLY ~label[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+area 401 66 27 27+[%TAB%%LNL%%MNL%%WNL%]+enabled		 "gameSaves.files\[rowNumber\].hasPortrait2"~
+	
+	~label
+			{
+				area 426 40 33 50
+				enabled		 "gameSaves.files[rowNumber].hasPortrait2"~
+	
+	REPLACE_TEXTUALLY ~label[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+area 429 66 27 27+[%TAB%%LNL%%MNL%%WNL%]+enabled		 "gameSaves.files\[rowNumber\].hasPortrait3"~
+	
+	~label
+			{
+				area 464 40 33 50
+				enabled		 "gameSaves.files[rowNumber].hasPortrait3"~
+	
+	REPLACE_TEXTUALLY ~label[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+area 457 66 27 27+[%TAB%%LNL%%MNL%%WNL%]+enabled		 "gameSaves.files\[rowNumber\].hasPortrait4"~
+	
+	~label
+			{
+				area 502 40 33 50
+				enabled		 "gameSaves.files[rowNumber].hasPortrait4"~
+	
+	REPLACE_TEXTUALLY ~label[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+area 485 66 27 27+[%TAB%%LNL%%MNL%%WNL%]+enabled		 "gameSaves.files\[rowNumber\].hasPortrait5"~
+	
+	~label
+			{
+				area 540 40 33 50
+				enabled		 "gameSaves.files[rowNumber].hasPortrait5"~
+				
+*/
+//==============\\
+// 13. BGEE.lua \\
+//==============\\
+
+COPY_EXISTING ~bgee.lua~ ~override~
+
+	REPLACE_TEXTUALLY ~fontcolors\['P'\] = 'FFa67da7' -- purple highlight[%TAB%%LNL%%MNL%%WNL%]+characters = {}+[%TAB%%LNL%%MNL%%WNL%]+tempStats = {}+[%TAB%%LNL%%MNL%%WNL%]+styles =+[%TAB%%LNL%%MNL%%WNL%]+{+~ 
+	
+	/*[%TAB%%LNL%%MNL%%WNL%]+normal =+[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+color = 'Y',+[%TAB%%LNL%%MNL%%WNL%]+font = 'bookmani',+[%TAB%%LNL%%MNL%%WNL%]+point = 14,+[%TAB%%LNL%%MNL%%WNL%]+valign = 'top',+[%TAB%%LNL%%MNL%%WNL%]+halign = 'left',+[%TAB%%LNL%%MNL%%WNL%]+useFontZoom = 1,+[%TAB%%LNL%%MNL%%WNL%]+},+[%TAB%%LNL%%MNL%%WNL%]+normal_parchment =+[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+color = 'Y',+[%TAB%%LNL%%MNL%%WNL%]+font = 'bookmani',+[%TAB%%LNL%%MNL%%WNL%]+point = 14,+[%TAB%%LNL%%MNL%%WNL%]+valign = 'top',+[%TAB%%LNL%%MNL%%WNL%]+halign = 'left',+[%TAB%%LNL%%MNL%%WNL%]+useFontZoom = 1,+[%TAB%%LNL%%MNL%%WNL%]+},+[%TAB%%LNL%%MNL%%WNL%]+white_parchment =+[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+color = 'N',+[%TAB%%LNL%%MNL%%WNL%]+font = 'bookmani',+[%TAB%%LNL%%MNL%%WNL%]+point = 14,+[%TAB%%LNL%%MNL%%WNL%]+valign = 'top',+[%TAB%%LNL%%MNL%%WNL%]+halign = 'left',+[%TAB%%LNL%%MNL%%WNL%]+useFontZoom = 1,+[%TAB%%LNL%%MNL%%WNL%]+},+[%TAB%%LNL%%MNL%%WNL%]+title =+[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+color = 'Y',+[%TAB%%LNL%%MNL%%WNL%]+font = 'bookmani',+[%TAB%%LNL%%MNL%%WNL%]+point = 22,+[%TAB%%LNL%%MNL%%WNL%]+valign = 'center',+[%TAB%%LNL%%MNL%%WNL%]+halign = 'center',+[%TAB%%LNL%%MNL%%WNL%]+},+[%TAB%%LNL%%MNL%%WNL%]+parchment =+[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+color = '5',+[%TAB%%LNL%%MNL%%WNL%]+font = 'bookmani' ,+[%TAB%%LNL%%MNL%%WNL%]+point = 14,+[%TAB%%LNL%%MNL%%WNL%]+valign = 'top',+[%TAB%%LNL%%MNL%%WNL%]+halign = 'left',+[%TAB%%LNL%%MNL%%WNL%]+useFontZoom = 1,+[%TAB%%LNL%%MNL%%WNL%]+},+[%TAB%%LNL%%MNL%%WNL%]+button =+[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+color = 'B',+[%TAB%%LNL%%MNL%%WNL%]+font = 'bookmani' ,+[%TAB%%LNL%%MNL%%WNL%]+point = 18,+[%TAB%%LNL%%MNL%%WNL%]+valign = 'center',+[%TAB%%LNL%%MNL%%WNL%]+halign = 'center',+[%TAB%%LNL%%MNL%%WNL%]+pad = {8,8,8,8},+[%TAB%%LNL%%MNL%%WNL%]+},+[%TAB%%LNL%%MNL%%WNL%]+label =+[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+color = 'B',+[%TAB%%LNL%%MNL%%WNL%]+font = 'bookmani',+[%TAB%%LNL%%MNL%%WNL%]+point = 20,+[%TAB%%LNL%%MNL%%WNL%]+valign = 'center',+[%TAB%%LNL%%MNL%%WNL%]+halign = 'center',+[%TAB%%LNL%%MNL%%WNL%]+},+[%TAB%%LNL%%MNL%%WNL%]+label_parchment =+[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+color = 'Y',+[%TAB%%LNL%%MNL%%WNL%]+font = 'bookmani',+[%TAB%%LNL%%MNL%%WNL%]+point = 20,+[%TAB%%LNL%%MNL%%WNL%]+valign = 'center',+[%TAB%%LNL%%MNL%%WNL%]+halign = 'center',+[%TAB%%LNL%%MNL%%WNL%]+},+[%TAB%%LNL%%MNL%%WNL%]+edit =+[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+color = 'B',+[%TAB%%LNL%%MNL%%WNL%]+font = 'bookmani',+[%TAB%%LNL%%MNL%%WNL%]+point = 14,+[%TAB%%LNL%%MNL%%WNL%]+valign = 'top',+[%TAB%%LNL%%MNL%%WNL%]+halign = 'left',+[%TAB%%LNL%%MNL%%WNL%]+},+[%TAB%%LNL%%MNL%%WNL%]+edit_parchment =+[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+color = '5',+[%TAB%%LNL%%MNL%%WNL%]+font = 'bookmani',+[%TAB%%LNL%%MNL%%WNL%]+point = 14,+[%TAB%%LNL%%MNL%%WNL%]+valign = 'top',+[%TAB%%LNL%%MNL%%WNL%]+halign = 'left',+[%TAB%%LNL%%MNL%%WNL%]+},+[%TAB%%LNL%%MNL%%WNL%]+list =+[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+color = 'Y',+[%TAB%%LNL%%MNL%%WNL%]+font = 'bookmani',+[%TAB%%LNL%%MNL%%WNL%]+point = 14,+[%TAB%%LNL%%MNL%%WNL%]+valign = 'center',+[%TAB%%LNL%%MNL%%WNL%]+halign = 'left',+[%TAB%%LNL%%MNL%%WNL%]+},+[%TAB%%LNL%%MNL%%WNL%]+list_parchment =+[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+color = '5',+[%TAB%%LNL%%MNL%%WNL%]+font = 'bookmani',+[%TAB%%LNL%%MNL%%WNL%]+point = 14,+[%TAB%%LNL%%MNL%%WNL%]+valign = 'center',+[%TAB%%LNL%%MNL%%WNL%]+halign = 'left',+[%TAB%%LNL%%MNL%%WNL%]+},+[%TAB%%LNL%%MNL%%WNL%]+gold =+[%TAB%%LNL%%MNL%%WNL%]+{+[%TAB%%LNL%%MNL%%WNL%]+color = '\$',+[%TAB%%LNL%%MNL%%WNL%]+font = 'bookmani',+[%TAB%%LNL%%MNL%%WNL%]+point = 14,+[%TAB%%LNL%%MNL%%WNL%]+valign = 'center',+[%TAB%%LNL%%MNL%%WNL%]+halign = 'center',+[%TAB%%LNL%%MNL%%WNL%]+}+[%TAB%%LNL%%MNL%%WNL%]+} */
+	
+	~
+fontcolors['P'] = 'FFa67da7' -- purple highlight
+--szef_bot
+fontcolors['X'] = 'ff4e5153' -- -
+fontcolors['Z'] = 'ff000000' -- black
+
+characters = {}
+
+tempStats = {}
+
+styles =
+{
+	normal =
+	{
+		color = 'Y',
+		font = 'bookmani',
+		point = 14,
+		valign = 'top',
+		halign = 'left',
+		useFontZoom = 1,
+	},
+	normal55 =
+	{
+		color = 'N',
+		font = 'bookmani',
+		point = 18,
+		valign = 'top',
+		halign = 'left',
+		useFontZoom = 0,
+	},
+	normal2 =
+	{
+		color = 'X',
+		font = 'LibrBskr',
+		point = 12,
+		valign = 'top',
+		halign = 'left',
+		useFontZoom = 1,
+	},
+	normal3 =
+	{
+		color = 'X',
+		font = 'LibrBskr',
+		point = 10,
+		valign = 'top',
+		halign = 'left',
+		useFontZoom = 1,
+	},
+	jshared =
+	{
+		color = 'X',
+		font = 'LibrBskr',
+		point = 14,
+		valign = 'top',
+		halign = 'left',
+		useFontZoom = 1,
+	},
+	inj =
+	{
+		color = 'P',
+		font = 'bookmani',
+		point = 10,
+		valign = 'top',
+		halign = 'left',
+		useFontZoom = 1,
+	},
+	jiw =
+	{
+		color = 'P',
+		font = 'bookmani',
+		point = 12,
+		valign = 'top',
+		halign = 'left',
+		useFontZoom = 1,
+	},
+	normal_parchment =
+	{
+		color = 'Y',
+		font = 'bookmani',
+		point = 14,
+		valign = 'top',
+		halign = 'left',
+		useFontZoom = 1,
+	},
+	white_parchment = 
+	{
+		color = 'N',
+		font = 'bookmani',
+		point = 14,
+		valign = 'top',
+		halign = 'left',
+		useFontZoom = 1,
+	},
+	title =
+	{
+		color = 'Y',
+		font = 'bookmani',
+		point = 22,
+		valign = 'center',
+		halign = 'center',
+	},
+	parchment = 
+	{
+		color = '5',
+		font = 'bookmani' ,
+		point = 14,
+		valign = 'top',
+		halign = 'left',
+		useFontZoom = 1,
+	},
+	button =
+	{
+		color = 'B',
+		font = 'bookmani' ,
+		point = 18,
+		valign = 'center',
+		halign = 'center',
+		pad = {8,8,8,8},
+	},
+	buttonczacha =
+	{
+		color = 'B',
+		font = 'bookmani' ,
+		point = 18,
+		valign = 'center',
+		halign = 'center',
+		pad = {33,8,8,8},
+	},
+	label =
+	{
+		color = 'B',
+		font = 'bookmani',
+		point = 20,
+		valign = 'center',
+		halign = 'center',
+	},
+	label_parchment =
+	{
+		color = 'Y',
+		font = 'bookmani',
+		point = 20,
+		valign = 'center',
+		halign = 'center',
+	},
+	edit =
+	{
+		color = 'B',
+		font = 'bookmani',
+		point = 14,
+		valign = 'top',
+		halign = 'left',
+	},
+	edit_parchment =
+	{
+		color = '5',
+		font = 'bookmani',
+		point = 14,
+		valign = 'top',
+		halign = 'left',
+	},
+	list =
+	{
+		color = 'Y',
+		font = 'bookmani',
+		point = 14,
+		valign = 'center',
+		halign = 'left',
+	},
+	list_parchment =
+	{
+		color = '5',
+		font = 'bookmani',
+		point = 14,
+		valign = 'center',
+		halign = 'left',
+	},
+	gold =
+	{
+		color = '$',
+		font = 'bookmani',
+		point = 14,
+		valign = 'center',
+		halign = 'center',
+	},~
+	
+//===============\\
+// 14. Languages \\
+//===============\\
+
+COPY_EXISTING ~L_en_US.lua~ ~override~
+
+
+	REPLACE_TEXTUALLY ~SHOW_CHEATS_BUTTON = "Show",~ ~SHOW_CHEATS_BUTTON = "Show",
+
+	--Book of Torment (ui mod)
+	ORIGINAL_DBOX = "This slider allows to change dialogue box skin.^N\\n\\nO r i g i n a l\\n^-",
+	JPC_DBOX = "This slider allows to change dialogue box skin.^N\\n\\nJ o u r n a l \\tP o r t r a i t \\tC o n v e r s a t i o n s\\n\\t(by Smeagolheart)^-",
+	SDB_DBOX = "This slider allows to change dialogue box skin.^N\\n\\nS i d e \\tD i a l o g u e \\tB o x\n^-",
+	TTON_DBOX = "This slider allows to change dialogue box skin.^N\\n\\nA \\tl a \\tN u m e n e r a \\tD i a l o g u e \\tB o x\\n^-",
+	DBOX_SKIN = "This slider allows to change dialogue box skin.",
+
+	SLIDER_DBOX_STRING_0 = "^0xffd5c885Original",
+	SLIDER_DBOX_STRING_1 = "^0xffd5c885w/Portraits",
+	SLIDER_DBOX_STRING_2 = "^0xffd5c885Side",
+	SLIDER_DBOX_STRING_3 = "^0xffd5c885TTON",
+
+	CLASSIC_INV = "This slider allows to change inventory skin, and slots arrangement.^N\\n\\nC l a s s i c \\tI n v e n t o r y\\n^-",
+	SHARED_INV = "This slider allows to change inventory skin, and slots arrangement.^N\\n\\nS h a r e d \\tI n v e n t o r y\\n^-",
+	INV_SKIN = "This slider allows to change inventory skin, and slots arrangement.",
+
+	SLIDER_INV_STRING_0 = "^0xff78b570Classic",
+	SLIDER_INV_STRING_1 = "^0xff78b570Shared",
+
+	DEFAULT_JOURNAL = "This slider allows to change journal screen.^N\\n\\nD e f a u l t \\tJ o u r n a l\\n^-",
+	NEW_JOURNAL = "This slider allows to change journal screen.^N\\n\\nN e w \\tJ o u r n a l\\n^-",
+	JOURNAL_SKIN = "This slider allows to change journal screen.",
+
+	SLIDER_JOURNAL_0 = "^0xff7f00ffDefault",
+	SLIDER_JOURNAL_1 = "^0xff7f00ffNew",
+	
+	DIALOGUE_BOX = "Dialogue Box:",
+	INVENTORY = "Inventory Layout:",
+	JOURNAL = "Journal Screen:",~
+
+
+COPY_EXISTING ~L_en_US.lua~ ~override/L_pl_PL.lua~
+
+	REPLACE_TEXTUALLY ~ORIGINAL_DBOX = "This slider allows to change dialogue box skin.\^N\\\n\\\nO r i g i n a l\\\n\^-",[%TAB%%LNL%%MNL%%WNL%]+JPC_DBOX = "This slider allows to change dialogue box skin.\^N\\\n\\\nJ o u r n a l \\\tP o r t r a i t \\\tC o n v e r s a t i o n s\\\n\\\t(by Smeagolheart)\^-",+[%TAB%%LNL%%MNL%%WNL%]+SDB_DBOX = "This slider allows to change dialogue box skin.\^N\\\n\\\nS i d e \\\tD i a l o g u e \\\tB o x\\\n\^-",+[%TAB%%LNL%%MNL%%WNL%]+TTON_DBOX = "This slider allows to change dialogue box skin.\^N\\\n\\\nA \\\tl a \\\tN u m e n e r a \\\tD i a l o g u e \\\tB o x\\\n\^-",+[%TAB%%LNL%%MNL%%WNL%]+DBOX_SKIN = "This slider allows to change dialogue box skin.",+[%TAB%%LNL%%MNL%%WNL%]+SLIDER_DBOX_STRING_0 = "\^0xffd5c885Original",+[%TAB%%LNL%%MNL%%WNL%]+SLIDER_DBOX_STRING_1 = "\^0xffd5c885w\/Portraits",+[%TAB%%LNL%%MNL%%WNL%]+SLIDER_DBOX_STRING_2 = "\^0xffd5c885Side",+[%TAB%%LNL%%MNL%%WNL%]+SLIDER_DBOX_STRING_3 = "\^0xffd5c885TTON",+[%TAB%%LNL%%MNL%%WNL%]+CLASSIC_INV = "This slider allows to change inventory skin, and slots arrangement.\^N\\\n\\\nC l a s s i c \\\tI n v e n t o r y\\\n\^-",+[%TAB%%LNL%%MNL%%WNL%]+SHARED_INV = "This slider allows to change inventory skin, and slots arrangement.\^N\\\n\\\nS h a r e d \\\tI n v e n t o r y\\\n\^-",+[%TAB%%LNL%%MNL%%WNL%]+INV_SKIN = "This slider allows to change inventory skin, and slots arrangement.",+[%TAB%%LNL%%MNL%%WNL%]+SLIDER_INV_STRING_0 = "\^0xff78b570Classic",+[%TAB%%LNL%%MNL%%WNL%]+SLIDER_INV_STRING_1 = "\^0xff78b570Shared",+[%TAB%%LNL%%MNL%%WNL%]+DEFAULT_JOURNAL = "This slider allows to change journal screen.\^N\\\n\\nD e f a u l t \\\tJ o u r n a l\\\n\^-",+[%TAB%%LNL%%MNL%%WNL%]+NEW_JOURNAL = "This slider allows to change journal screen.\^N\\\n\\\nN e w \\\tJ o u r n a l\\\n\^-",+[%TAB%%LNL%%MNL%%WNL%]+JOURNAL_SKIN = "This slider allows to change journal screen.",+[%TAB%%LNL%%MNL%%WNL%]+SLIDER_JOURNAL_0 = "\^0xff7f00ffDefault",+[%TAB%%LNL%%MNL%%WNL%]+SLIDER_JOURNAL_1 = "\^0xff7f00ffNew",+[%TAB%%LNL%%MNL%%WNL%]+DIALOGUE_BOX = "Dialogue Box:",+[%TAB%%LNL%%MNL%%WNL%]+INVENTORY = "Inventory Layout:",+[%TAB%%LNL%%MNL%%WNL%]+JOURNAL = "Journal Screen:",~
+	
+	~ORIGINAL_DBOX = "Ten suwak pozwala na zmianę okna dialogowego.^N\\n\\nO r i g i n a l e\\n^-",
+	JPC_DBOX = "Ten suwak pozwala na zmianę okna dialogowego.^N\\n\\nJ o u r n a l \\tP o r t r a i t \\tC o n v e r s a t i o n s\\n\\t(by Smeagolheart)^-",
+	SDB_DBOX = "Ten suwak pozwala na zmianę okna dialogowego.^N\\n\\nB o c z n e \\tO k n o \\tD i a l o g o w e\\n^-",
+	TTON_DBOX = "Ten suwak pozwala na zmianę okna dialogowego.^N\\n\\nA \\tl a \\tN u m e n e r a\\n^-",
+	DBOX_SKIN = "Ten suwak pozwala na zmianę okna dialogowego.",
+
+	SLIDER_DBOX_STRING_0 = "^0xffd5c885Originale",
+	SLIDER_DBOX_STRING_1 = "^0xffd5c885z Portretami",
+	SLIDER_DBOX_STRING_2 = "^0xffd5c885Boczne",
+	SLIDER_DBOX_STRING_3 = "^0xffd5c885TTON",
+
+	CLASSIC_INV = "Ten suwak pozwala na zmianę układu ekwipunku.^N\\n\\nK l a s y c z n y\\tE k w i p u n e k\\n^-",
+	SHARED_INV = "Ten suwak pozwala na zmianę układu ekwipunku.^N\\n\\nW s p ó ł d z i e l o n y \\tE k w i p u n e k\\n^-",
+	INV_SKIN = "Ten suwak pozwala na zmianę układu ekwipunku.",
+
+	SLIDER_INV_STRING_0 = "^0xff78b570Klasyczny",
+	SLIDER_INV_STRING_1 = "^0xff78b570Dzielony",
+
+	DEFAULT_JOURNAL = "Ten suwak pozwala na zmianę okna dziennika.^N\\n\\nD o m y ś l n y\\tD z i e n n i k\\n^-",
+	NEW_JOURNAL = "Ten suwak pozwala na zmianę okna dziennika^N\\n\\nN o w y \\tD z i e n n i k\\n^-",
+	JOURNAL_SKIN = "Ten suwak pozwala na zmianę okna dziennika",
+
+	SLIDER_JOURNAL_0 = "^0xff7f00ffDomyślny",
+	SLIDER_JOURNAL_1 = "^0xff7f00ffNowy",
+	
+	DIALOGUE_BOX = "Okno Dialogowe:",
+	INVENTORY = "Ukł. Ekwpipunku:",
+	JOURNAL = "Ekran Dziennika:",~
+	
