@@ -28,9 +28,7 @@ How to set skins after install: Go to the graphics options in the game, look for
 
 ---------------------------------------------------------------------------------------------------------------------------------
 Important information: 
-"Book of Torment" should be compatible with other mods. For UB mod, this order is recommended:
-
-(1)book-of-torment + (2)unfinished-business + (3)journal-portrait-conversations( WITHOUT copying UI.Menu ) ...
+"Book of Torment" should be compatible with other mods.
 
 ---
 
