@@ -1480,7 +1480,7 @@ menu
 		rowheight	dynamic
 		table		"quests"
 		var			selectedQuest
-		scrollbar	'g-btsl1'
+		scrollbar	'cgscrl1'
 		area		158 224 329 332
 		hidehighlight
 		highlight color "Y"
@@ -1708,7 +1708,7 @@ menu
 
 		table		"journalDisplay"
 		var			selectedJournal
-		scrollbar	'g-btsl1'
+		scrollbar	'cgscrl1'
 		area		150 188 346 402
 	}
 }
@@ -1754,7 +1754,7 @@ menu
 		area 14 186 114 433
 		table "bestiary"
 		var	selectedBestiaryCreature
-		scrollbar 'g-btsl1'
+		scrollbar 'cgscrl1'
 		hidehighlight
 		highlight color 255 255 255 255
 		focus color 255 255 255 255
@@ -1774,7 +1774,7 @@ menu
 		text lua "getBestiaryDesc()"
 		text style "jshared"
 		text color lua "getBLACKCOLOR(rowNumber)"
-		scrollbar	'g-btsl1'
+		scrollbar	'cgscrl1'
 	}
 	button
 	{
@@ -2844,7 +2844,7 @@ menu
 		rowheight dynamic
 		table "dialogTable"
 		var "worldPlayerDialogSelection"
-		scrollbar	"g-btsl1"
+		scrollbar	"cgscrl1"
 		scrollbar func "chatboxScroll2"
 		hideHighlight
 		scrollbar force 1
@@ -2983,7 +2983,7 @@ menu
 		rowheight dynamic
 		table "dialogTable"
 		var "worldPlayerDialogSelection"
-		scrollbar	"g-btsl1"
+		scrollbar	"cgscrl1"
 		scrollbar func "chatboxScroll2"
 		hideHighlight
 		scrollbar force 1
@@ -3712,4 +3712,3 @@ COPY_EXISTING ~L_en_US.lua~ ~override/L_pl_PL.lua~
 	GEMARIEL_WS_TOOLTIP = "Pazury Gemariela",
 	GEMARIEL_WS_ITEM_NAME = "Pazury Gemariela",
 	GEMARIEL_WS_ITEM_DESC = "PAZURY GEMARIELA \n(Standardowa broń) \nObrażenia: 1-8, kłute lub cięte \nUmagicznienie: +1 \nSzybkość: 1 \nWaga: 0 \nBiegłość: Sztylety \n\nPazury abiszaja, ostre jak brzytwa, szybkie i zabójcze, ale przede wszystkim skuteczne. To podstawowa broń Gemariela, zaprawiona nutką magii Seta. Czegóż abiszaj tego pokroju może chcieć więcej od życia?",~
-	
