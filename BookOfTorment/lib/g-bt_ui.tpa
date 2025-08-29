@@ -726,7 +726,7 @@ menu
 	onOpen
 	"	
 		if SkinsOptionsSliders[1][6] == 0 then
-		Infinity_PushMenu('BACKGROUND_DIALOG')
+		Infinity_PushMenu('ORIGINAL_BACKGROUND_DIALOG')
 		elseif SkinsOptionsSliders[1][6] == 1 then
 		Infinity_PushMenu('PORTRAITS_BACKGROUND_DIALOG')
 		elseif SkinsOptionsSliders[1][6] == 2 then
@@ -754,7 +754,7 @@ menu
 	" 	
 	
 		popSidebars()
-		Infinity_PopMenu('BACKGROUND_DIALOG')
+		Infinity_PopMenu('ORIGINAL_BACKGROUND_DIALOG')
 		Infinity_PopMenu('PORTRAITS_BACKGROUND_DIALOG')
 		Infinity_PopMenu('SDB_BACKGROUND_DIALOG')
 		Infinity_PopMenu('TTON_BACKGROUND_DIALOG')
@@ -2459,12 +2459,12 @@ menu
 
 menu
 {
-	name 'BACKGROUND_DIALOG'
+	name 'ORIGINAL_BACKGROUND_DIALOG'
 	offset 0 0
 	align center bottom
 	exclusiveFocus
 	ignoreEsc
-	size 1366 298
+	size 1366 297
 	
 	label
 	{
