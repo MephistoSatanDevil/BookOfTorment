@@ -3222,7 +3222,7 @@ menu
 //===========================\\
 
 
-	REPLACE_TEXTUALLY ~function getDialogEntryText\(row\)[%TAB%%LNL%%MNL%%WNL%]+local text = dialogTable\[row\].text[%TAB%%LNL%%MNL%%WNL%]+if \(row == worldPlayerDialogSelection\) then[%TAB%%LNL%%MNL%%WNL%]+--Color the text white when selected[%TAB%%LNL%%MNL%%WNL%]+text = string.gsub\(text, "%\^0xff212eff", "\^0xFFFFFFFF"\)[%TAB%%LNL%%MNL%%WNL%]+end(%[%TAB%%LNL%%MNL%%WNL%]+text = string.gsub\(text, " ", "\t"\))?[%TAB%%LNL%%MNL%%WNL%]+return text[%TAB%%LNL%%MNL%%WNL%]+end~
+	REPLACE_TEXTUALLY ~function getDialogEntryText(row)[%TAB%%LNL%%MNL%%WNL%]+local text = dialogTable\[row\].text+[%TAB%%LNL%%MNL%%WNL%]+if (row == worldPlayerDialogSelection) then[%TAB%%LNL%%MNL%%WNL%]+--Color the text white when selected[%TAB%%LNL%%MNL%%WNL%]+text = string.gsub(text, "%\^0xff212eff", "\^0xFFFFFFFF")[%TAB%%LNL%%MNL%%WNL%]+end[%TAB%%LNL%%MNL%%WNL%]+return text[%TAB%%LNL%%MNL%%WNL%]+end~
 		
 	~~~~~--szef_11 (Dialogentrytext 2 & 3)
 	
